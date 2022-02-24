@@ -8,6 +8,8 @@
 import Foundation
 
 struct UserSearchResult: Codable {
+    let avatarUrl: URL
+    let displayName: String
     let username: String
 }
 
