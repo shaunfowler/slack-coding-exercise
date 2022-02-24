@@ -6,12 +6,12 @@
 //
 
 import Foundation
+import Combine
 
 protocol AutocompleteViewModelDelegate: AnyObject {
     func usersDataUpdated()
 }
 
-// MARK: - Interfaces
 protocol AutocompleteViewModelInterface {
     /*
      * Fetches users from that match a given a search term
@@ -24,8 +24,8 @@ protocol AutocompleteViewModelInterface {
     func updateSearchText(text: String?)
 
     /*
-    * Returns a username at the given position.
-    */
+     * Returns a username at the given position.
+     */
     func username(at index: Int) -> String
 
     /*
@@ -35,26 +35,30 @@ protocol AutocompleteViewModelInterface {
 
     /*
      Delegate that allows to send data updates through callback.
- */
+     */
     var delegate: AutocompleteViewModelDelegate? { get set }
 }
 
 class AutocompleteViewModel: AutocompleteViewModelInterface {
+
+    private enum Constants {
+        static let searchDebounceInSeconds: TimeInterval = 0.33
+    }
+
     private let resultsDataProvider: UserSearchResultDataProviderInterface
     private var usernames: [String] = []
+    private var searchText = CurrentValueSubject<String?, Never>(nil)
+    private var subscriptions = Set<AnyCancellable>()
+
     public weak var delegate: AutocompleteViewModelDelegate?
 
     init(dataProvider: UserSearchResultDataProviderInterface) {
         self.resultsDataProvider = dataProvider
+        monitorSearchText()
     }
 
     func updateSearchText(text: String?) {
-        self.fetchUserNames(text) { [weak self] usernames in
-            DispatchQueue.main.async {
-                self?.usernames = usernames
-                self?.delegate?.usersDataUpdated()
-            }
-        }
+        searchText.send(text)
     }
 
     func usernamesCount() -> Int {
@@ -73,6 +77,29 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
 
         self.resultsDataProvider.fetchUsers(term) { users in
             completionHandler(users.map { $0.username })
+        }
+    }
+
+    // MARK: - Private Functions
+
+    private func monitorSearchText() {
+        searchText
+            .debounce(for: .init(Constants.searchDebounceInSeconds), scheduler: RunLoop.main)
+            .print()
+            .sink { [weak self] text in
+                if let self = self, let text = text {
+                    self.performSearch(text: text)
+                }
+            }
+            .store(in: &subscriptions)
+    }
+
+    private func performSearch(text: String) {
+        self.fetchUserNames(text) { [weak self] usernames in
+            DispatchQueue.main.async {
+                self?.usernames = usernames
+                self?.delegate?.usersDataUpdated()
+            }
         }
     }
 }
