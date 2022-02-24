@@ -9,27 +9,30 @@ import XCTest
 @testable import CodingExercise
 
 class CodingExerciseTests: XCTestCase {
-    
+
+    let testSearchTerm = "test123"
+    let testUser = UserSearchResult(avatarUrl: URL(string: "http://example.com")!, displayName: "Jane", username: "jdoe")
+    var mockApiService: MockSlackAPIService!
+
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        mockApiService = MockSlackAPIService()
     }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+
+    func testDataProviderPassesSearchTextToApi() {
+        // Arrange
+        let expectation = XCTestExpectation(description: "Search term was passed to API")
+        mockApiService.onFetchUsersCalled = { term, completion in
+            XCTAssertEqual(term, self.testSearchTerm)
+            completion([self.testUser])
+            expectation.fulfill()
         }
+
+        // Act
+        let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService)
+        dataProvider.fetchUsers(testSearchTerm) { result in }
+
+        // Assert
+        wait(for: [expectation], timeout: 1)
     }
-    
 }
