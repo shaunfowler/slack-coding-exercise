@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 // TODO: Custom font
 class UserTableCellView: UITableViewCell {
@@ -19,27 +20,43 @@ class UserTableCellView: UITableViewCell {
         static let avatarCornerRadius: CGFloat = 4
         static let avatarToNameSpacing: CGFloat = 12
         static let nameToUsernameSpacing: CGFloat = 8
+
+        static let nameFontSize: CGFloat = 16
+        static let nameFontColor: UIColor = .customPrimaryText
+        static let usernameFontSize: CGFloat = 16
+        static let usernameFontColor: UIColor = .customSecondaryText
     }
 
-    let avatarView: UIImageView = {
+    var avatarUrl: URL?  {
+        didSet {
+            // Use Kingfisher for image loading + caching remote images
+            // Credit: https://github.com/onevcat/Kingfisher
+            avatarView.kf.setImage(with: avatarUrl)
+        }
+    }
+
+    private let avatarView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .systemGray
+        imageView.backgroundColor = .imagePlaceholderBackground
         imageView.layer.cornerRadius = Constants.avatarCornerRadius
+        imageView.clipsToBounds = true
         return imageView
     }()
 
     let nameView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .lato(weight: .bold, size: 16)
+        label.font = .lato(weight: .bold, size: Constants.nameFontSize)
+        label.textColor = Constants.nameFontColor
         return label
     }()
 
     let usernameView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .lato(weight: .regular, size: 16)
+        label.font = .lato(weight: .regular, size: Constants.usernameFontSize)
+        label.textColor = Constants.usernameFontColor
         return label
     }()
 
