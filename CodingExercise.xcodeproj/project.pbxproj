@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,8 @@
 		E69DFAB927C75329003F9FE8 /* UserTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */; };
 		E69DFABB27C76B91003F9FE8 /* MockSlackAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFABA27C76B91003F9FE8 /* MockSlackAPIService.swift */; };
 		E69DFABE27C82E8F003F9FE8 /* LatoFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFABD27C82E8F003F9FE8 /* LatoFont.swift */; };
+		E69DFAC127C838C1003F9FE8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E69DFAC027C838C1003F9FE8 /* Kingfisher */; };
+		E69DFAC427C83C1C003F9FE8 /* UIColor+custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,7 @@
 		E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableCellView.swift; sourceTree = "<group>"; };
 		E69DFABA27C76B91003F9FE8 /* MockSlackAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSlackAPIService.swift; sourceTree = "<group>"; };
 		E69DFABD27C82E8F003F9FE8 /* LatoFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatoFont.swift; sourceTree = "<group>"; };
+		E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+custom.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E69DFAC127C838C1003F9FE8 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +99,7 @@
 		6A29FD0320E6EB0F004885EC /* CodingExercise */ = {
 			isa = PBXGroup;
 			children = (
+				E69DFAC227C83C11003F9FE8 /* Extensions */,
 				E69DFABC27C82E39003F9FE8 /* Font */,
 				6AE88E2F222758CA0032677C /* Resources */,
 				E69DFAB727C750A8003F9FE8 /* SearchFeature */,
@@ -110,8 +115,8 @@
 		6A29FD1820E6EB10004885EC /* CodingExerciseTests */ = {
 			isa = PBXGroup;
 			children = (
-				6A29FD1B20E6EB10004885EC /* Info.plist */,
 				6A29FD1920E6EB10004885EC /* CodingExerciseTests.swift */,
+				6A29FD1B20E6EB10004885EC /* Info.plist */,
 				E69DFABA27C76B91003F9FE8 /* MockSlackAPIService.swift */,
 			);
 			path = CodingExerciseTests;
@@ -155,6 +160,14 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		E69DFAC227C83C11003F9FE8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -171,6 +184,9 @@
 			dependencies = (
 			);
 			name = CodingExercise;
+			packageProductDependencies = (
+				E69DFAC027C838C1003F9FE8 /* Kingfisher */,
+			);
 			productName = CodingExercise;
 			productReference = 6A29FD0120E6EB0F004885EC /* CodingExercise.app */;
 			productType = "com.apple.product-type.application";
@@ -225,6 +241,9 @@
 				Base,
 			);
 			mainGroup = 6A29FCF820E6EB0F004885EC;
+			packageReferences = (
+				E69DFABF27C838C1003F9FE8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 6A29FD0220E6EB0F004885EC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -262,11 +281,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E69DFABE27C82E8F003F9FE8 /* LatoFont.swift in Sources */,
 				6A29FD0520E6EB0F004885EC /* AppDelegate.swift in Sources */,
 				6A29FD0720E6EB0F004885EC /* AutocompleteViewController.swift in Sources */,
 				6AF5D92820EC255B008186C3 /* AutocompleteViewModel.swift in Sources */,
+				E69DFABE27C82E8F003F9FE8 /* LatoFont.swift in Sources */,
 				6A29FD2920E6EC2F004885EC /* SlackAPIService.swift in Sources */,
+				E69DFAC427C83C1C003F9FE8 /* UIColor+custom.swift in Sources */,
 				6A29FD2720E6EC1F004885EC /* UserSearchResult.swift in Sources */,
 				6A29FD2D20E6EC79004885EC /* UserSearchResultDataProvider.swift in Sources */,
 				E69DFAB927C75329003F9FE8 /* UserTableCellView.swift in Sources */,
@@ -401,7 +421,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -414,7 +435,10 @@
 				DEVELOPMENT_TEAM = 6UF7FN999R;
 				INFOPLIST_FILE = CodingExercise/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = slack.CodingExercise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -430,7 +454,10 @@
 				DEVELOPMENT_TEAM = 6UF7FN999R;
 				INFOPLIST_FILE = CodingExercise/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = slack.CodingExercise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -446,7 +473,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6UF7FN999R;
 				INFOPLIST_FILE = CodingExerciseTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = slack.CodingExerciseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -463,7 +494,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6UF7FN999R;
 				INFOPLIST_FILE = CodingExerciseTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = slack.CodingExerciseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -503,6 +538,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E69DFABF27C838C1003F9FE8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E69DFAC027C838C1003F9FE8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E69DFABF27C838C1003F9FE8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6A29FCF920E6EB0F004885EC /* Project object */;
 }

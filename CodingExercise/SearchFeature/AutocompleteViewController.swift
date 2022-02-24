@@ -41,6 +41,7 @@ class AutocompleteViewController: UIViewController {
         tableView.estimatedRowHeight = Constants.cellRowHeight
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UserTableCellView.self, forCellReuseIdentifier: Constants.cellIdentifier)
+        tableView.separatorColor = .customSeparator
         return tableView
     }()
 
@@ -130,6 +131,7 @@ extension AutocompleteViewController: UITableViewDataSource, UITableViewDelegate
             let user = viewModel.user(at: indexPath.row)
             cell.nameView.text = user.displayName
             cell.usernameView.text = user.username
+            cell.avatarUrl = user.avatarUrl
         }
 
         return cell
