@@ -29,6 +29,8 @@ class AutocompleteViewController: UIViewController {
         textField.placeholder = Constants.textFieldPlaceholder
         textField.accessibilityLabel = Constants.textFieldPlaceholder
         textField.borderStyle = .roundedRect
+        textField.font = .lato(.body)
+        textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -135,5 +137,9 @@ extension AutocompleteViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.userCount()
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

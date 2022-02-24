@@ -32,12 +32,14 @@ class UserTableCellView: UITableViewCell {
     let nameView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .lato(weight: .bold, size: 16)
         return label
     }()
 
     let usernameView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .lato(weight: .regular, size: 16)
         return label
     }()
 
