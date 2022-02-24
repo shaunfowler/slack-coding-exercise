@@ -7,26 +7,22 @@
 
 import UIKit
 
-struct Constants {
-    static let textFieldPlaceholder = "Search"
-    static let cellIdentifier = "Cell"
-    static let cellRowHeight: CGFloat = 50.0
-    static let leftSpacing: CGFloat = 20.0
-    static let bottomSpacing: CGFloat = 20.0
-    static let rightSpacing: CGFloat = -20.0
-}
-
 class AutocompleteViewController: UIViewController {
+
+    // MARK: - Internal Types
+
+    private enum Constants {
+        static let textFieldPlaceholder = "Search"
+        static let cellIdentifier = "UserSearchCell"
+        static let cellRowHeight: CGFloat = 50.0
+        static let leftSpacing: CGFloat = 20.0
+        static let bottomSpacing: CGFloat = 20.0
+        static let rightSpacing: CGFloat = -20.0
+    }
+
+    // MARK: - Private Properties
+
     private var viewModel: AutocompleteViewModelInterface
-
-    init(viewModel: AutocompleteViewModelInterface) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     private let searchTextField: UITextField = {
         let textField = UITextField(frame: .zero)
@@ -50,6 +46,21 @@ class AutocompleteViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+
+    // MARK: - Initialization
+
+    init(viewModel: AutocompleteViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+
+        view.backgroundColor = .systemBackground
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Layout
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,14 +98,18 @@ class AutocompleteViewController: UIViewController {
             searchResultsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             searchResultsTableView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Constants.leftSpacing),
             searchResultsTableView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: Constants.rightSpacing)
-            ])
+        ])
+    }
+
+    // MARK: - Selectors
+
+    @objc func textFieldDidChange(textField: UITextField) {
+        viewModel.updateSearchText(text: searchTextField.text)
     }
 }
 
 extension AutocompleteViewController: UITextFieldDelegate {
-    @objc func textFieldDidChange(textField: UITextField) {
-        viewModel.updateSearchText(text: searchTextField.text)
-    }
+    // TODO
 }
 
 extension AutocompleteViewController: AutocompleteViewModelDelegate {
