@@ -14,7 +14,7 @@ class AutocompleteViewController: UIViewController {
     private enum Constants {
         static let textFieldPlaceholder = "Search"
         static let cellIdentifier = "UserSearchCell"
-        static let cellRowHeight: CGFloat = 50.0
+        static let cellRowHeight: CGFloat = 44.0
         static let leftSpacing: CGFloat = 20.0
         static let bottomSpacing: CGFloat = 20.0
         static let rightSpacing: CGFloat = -20.0
@@ -38,6 +38,7 @@ class AutocompleteViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Constants.cellRowHeight
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UserTableCellView.self, forCellReuseIdentifier: Constants.cellIdentifier)
         return tableView
     }()
 
@@ -96,8 +97,8 @@ class AutocompleteViewController: UIViewController {
 
             searchResultsTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: Constants.bottomSpacing),
             searchResultsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            searchResultsTableView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Constants.leftSpacing),
-            searchResultsTableView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: Constants.rightSpacing)
+            searchResultsTableView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            searchResultsTableView.rightAnchor.constraint(equalTo: contentView.rightAnchor)
         ])
     }
 
@@ -109,7 +110,7 @@ class AutocompleteViewController: UIViewController {
 }
 
 extension AutocompleteViewController: UITextFieldDelegate {
-    // TODO
+    // TODO: Possibly show a message on focus?
 }
 
 extension AutocompleteViewController: AutocompleteViewModelDelegate {
@@ -120,15 +121,19 @@ extension AutocompleteViewController: AutocompleteViewModelDelegate {
 
 extension AutocompleteViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: Constants.cellIdentifier)
-        let username = viewModel.username(at: indexPath.row)
 
-        cell.textLabel?.text = username
-        cell.accessibilityLabel = username
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
+
+        if let cell = cell as? UserTableCellView {
+            let user = viewModel.user(at: indexPath.row)
+            cell.nameView.text = user.displayName
+            cell.usernameView.text = user.username
+        }
+
         return cell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.usernamesCount()
+        return viewModel.userCount()
     }
 }

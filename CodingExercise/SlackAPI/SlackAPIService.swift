@@ -17,15 +17,26 @@ protocol SlackAPIInterface {
 }
 
 class SlackApi: SlackAPIInterface {
+
     let defaultSession = URLSession(configuration: .default)
     var dataTask: URLSessionDataTask?
 
     private let baseURLString =  "https://slack-users.herokuapp.com/search"
 
     /**
-     A global shared SlackApi Instance.
+     * A JSON decoder that convers keys from "snake_case" to "camelCase"/
      */
-    static public let shared: SlackApi = SlackApi()
+    private let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+
+    /**
+     A global shared SlackApi Instance.
+     TODO: Remove singleton pattern
+     */
+    static public let shared: SlackAPIInterface = SlackApi()
 
     /**
      Fetch Slack users based on a given search term.
@@ -42,15 +53,18 @@ class SlackApi: SlackAPIInterface {
         urlComponents.queryItems = [queryItemQuery]
 
         guard let url = urlComponents.url else { return }
-        dataTask = defaultSession.dataTask(with: url) { data, response, error in
+        dataTask = defaultSession.dataTask(with: url) { [weak self] data, response, error in
+
             // These will be the results we return with our completion handler
             var resultsToReturn = [UserSearchResult]()
 
             // Ensure that our data task is cleaned up and our completion handler is called
             defer {
-                self.dataTask = nil
+                self?.dataTask = nil
                 completionHandler(resultsToReturn)
             }
+
+            guard let self = self else { return }
 
             if let error = error {
                 NSLog("[API] Request failed with error: \(error.localizedDescription)")
@@ -67,9 +81,8 @@ class SlackApi: SlackAPIInterface {
                 return
             }
 
-            let decoder = JSONDecoder()
             do {
-                let result = try decoder.decode(SearchResponse.self, from: data)
+                let result = try self.decoder.decode(SearchResponse.self, from: data)
                 resultsToReturn = result.users
             } catch {
                 NSLog("[API] Decoding failed with error: \(error)")

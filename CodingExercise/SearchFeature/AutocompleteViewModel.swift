@@ -15,23 +15,24 @@ protocol AutocompleteViewModelDelegate: AnyObject {
 protocol AutocompleteViewModelInterface {
     /*
      * Fetches users from that match a given a search term
+     * TODO: Return a model type for the view instead of the API `UserSearchResult` DTO
      */
-    func fetchUserNames(_ searchTerm: String?, completionHandler: @escaping ([String]) -> Void)
+    func fetchUsers(_ searchTerm: String?, completionHandler: @escaping ([UserSearchResult]) -> Void)
 
     /*
-     * Updates usernames according to given update string.
+     * Updates users according to given update string.
      */
     func updateSearchText(text: String?)
 
     /*
-     * Returns a username at the given position.
+     * Returns a user at the given position.
      */
-    func username(at index: Int) -> String
+    func user(at index: Int) -> UserSearchResult
 
     /*
-     * Returns the count of the current usernames array.
+     * Returns the count of the current users array.
      */
-    func usernamesCount() -> Int
+    func userCount() -> Int
 
     /*
      Delegate that allows to send data updates through callback.
@@ -46,7 +47,7 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     }
 
     private let resultsDataProvider: UserSearchResultDataProviderInterface
-    private var usernames: [String] = []
+    private var users: [UserSearchResult] = []
     private var searchText = CurrentValueSubject<String?, Never>(nil)
     private var subscriptions = Set<AnyCancellable>()
 
@@ -55,33 +56,38 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     init(dataProvider: UserSearchResultDataProviderInterface) {
         self.resultsDataProvider = dataProvider
         monitorSearchText()
+        // searchText.send("Al")
     }
 
     func updateSearchText(text: String?) {
         searchText.send(text)
     }
 
-    func usernamesCount() -> Int {
-        return usernames.count
+    func userCount() -> Int {
+        return users.count
     }
 
-    func username(at index: Int) -> String {
-        return usernames[index]
+    func user(at index: Int) -> UserSearchResult {
+        return users[index]
     }
 
-    func fetchUserNames(_ searchTerm: String?, completionHandler: @escaping ([String]) -> Void) {
+    func fetchUsers(_ searchTerm: String?, completionHandler: @escaping ([UserSearchResult]) -> Void) {
+        // Empty search term, return no results.
         guard let term = searchTerm, !term.isEmpty else {
             completionHandler([])
             return
         }
 
         self.resultsDataProvider.fetchUsers(term) { users in
-            completionHandler(users.map { $0.username })
+            completionHandler(users)
         }
     }
 
     // MARK: - Private Functions
 
+    /*
+     * Subscribe to changes in search text and debounce to limit load on API while customer is typing.
+     */
     private func monitorSearchText() {
         searchText
             .debounce(for: .init(Constants.searchDebounceInSeconds), scheduler: RunLoop.main)
@@ -94,11 +100,15 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
             .store(in: &subscriptions)
     }
 
+    /*
+     * Perform the API call and notify delegate on main queue that data has been updated.
+     */
     private func performSearch(text: String) {
-        self.fetchUserNames(text) { [weak self] usernames in
+        self.fetchUsers(text) { [weak self] users in
             DispatchQueue.main.async {
-                self?.usernames = usernames
-                self?.delegate?.usersDataUpdated()
+                guard let self = self else { return }
+                self.users = users
+                self.delegate?.usersDataUpdated()
             }
         }
     }
