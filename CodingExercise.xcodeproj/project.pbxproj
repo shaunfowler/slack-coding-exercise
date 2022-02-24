@@ -90,11 +90,9 @@
 			isa = PBXGroup;
 			children = (
 				6AE88E2F222758CA0032677C /* Resources */,
+				E69DFAB727C750A8003F9FE8 /* SearchFeature */,
 				6A29FD2520E6EC09004885EC /* SlackAPI */,
 				6A29FD0420E6EB0F004885EC /* AppDelegate.swift */,
-				6A29FD2C20E6EC79004885EC /* UserSearchResultDataProvider.swift */,
-				6A29FD0620E6EB0F004885EC /* AutocompleteViewController.swift */,
-				6AF5D92720EC255B008186C3 /* AutocompleteViewModel.swift */,
 				6AC4866D21F2AB700068D741 /* LaunchScreen.storyboard */,
 				6A29FD0B20E6EB0F004885EC /* Assets.xcassets */,
 				6A29FD1020E6EB0F004885EC /* Info.plist */,
@@ -128,6 +126,16 @@
 				0FEDCF0424F89B5200358051 /* denylist.txt */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		E69DFAB727C750A8003F9FE8 /* SearchFeature */ = {
+			isa = PBXGroup;
+			children = (
+				6A29FD2C20E6EC79004885EC /* UserSearchResultDataProvider.swift */,
+				6A29FD0620E6EB0F004885EC /* AutocompleteViewController.swift */,
+				6AF5D92720EC255B008186C3 /* AutocompleteViewModel.swift */,
+			);
+			path = SearchFeature;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Interfaces
+
 protocol UserSearchResultDataProviderInterface {
     /*
      * Fetches users from that match a given a search term
