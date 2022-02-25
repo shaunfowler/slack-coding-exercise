@@ -12,7 +12,6 @@ class AutocompleteViewController: UIViewController {
     // MARK: - Internal Types
 
     private enum Constants {
-        static let textFieldPlaceholder = "Search"
         static let cellIdentifier = "UserSearchCell"
         static let cellRowHeight: CGFloat = 44.0
         static let verticalSpacing: CGFloat = 8.0
@@ -26,8 +25,8 @@ class AutocompleteViewController: UIViewController {
     private lazy var searchTextField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = Constants.textFieldPlaceholder
-        textField.accessibilityLabel = Constants.textFieldPlaceholder
+        textField.placeholder = LocalizableKey.searchPlaceholder.localized
+        textField.accessibilityLabel = LocalizableKey.searchPlaceholder.localized
         textField.clearButtonMode = .always
         textField.borderStyle = .roundedRect
         textField.font = .lato(.body)
@@ -71,7 +70,12 @@ class AutocompleteViewController: UIViewController {
 
         setupSubviews()
         setupAccessibility()
-        monitorKeyboard()
+        subscribeToKeyboardVisibility()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        unsubscribeFromKeyboardVisibility()
     }
 
     private func setupSubviews() {
@@ -98,9 +102,21 @@ class AutocompleteViewController: UIViewController {
         searchResultsTableView.shouldGroupAccessibilityChildren = true
     }
 
-    private func monitorKeyboard() {
+    private func subscribeToKeyboardVisibility() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIApplication.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIApplication.keyboardWillHideNotification, object: nil)
+    }
+
+    private func unsubscribeFromKeyboardVisibility() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    private func showTableViewMessage(message: String, level: MessageView.Level? = nil) {
+        searchResultsTableView.backgroundView = MessageView(message: message, level: level)
+    }
+
+    private func hideTableViewMessage() {
+        searchResultsTableView.backgroundView = nil
     }
 
     // MARK: - Selectors
@@ -125,9 +141,27 @@ class AutocompleteViewController: UIViewController {
 }
 
 extension AutocompleteViewController: AutocompleteViewModelDelegate {
-    func onUsersDataUpdated(users: [UserSearchResult], withError error: SlackError?) {
+    func onUsersDataUpdated(users: [UserSearchResult], forSearchTerm searchTerm: String?, withError error: SlackError?) {
+        // Display an error if there are no rows to dispaly in the table view.
+        switch (users.isEmpty, error) {
+        case (false, nil):
+            // Clear the message.
+            searchResultsTableView.backgroundView = nil
+
+        case (true, nil):
+            // Show a placeholder message.
+            let message = searchTerm == nil
+                ? LocalizableKey.searchMessageInitial.localized
+                : LocalizableKey.searchMessageNoResults.localized
+            showTableViewMessage(message: message)
+
+        case (_, _):
+            // Show a generic error message.
+            showTableViewMessage(message: LocalizableKey.searchMessageError.localized, level: .warn)
+        }
+
+        // Reload the table view.
         searchResultsTableView.reloadData()
-        // TODO: display user-friendly error message
     }
 }
 

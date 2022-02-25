@@ -67,12 +67,12 @@ class UserTableCellView: UITableViewCell {
         addSubview(usernameView)
 
         setupAccessibility()
-        setupLayoutMargins()
+        setupLayoutMarginsAndInsets()
         activateConstraints()
     }
 
     override var accessibilityLabel: String? {
-        get { "Search result" }
+        get { LocalizableKey.searchResultAccLabel.localized }
         set { }
     }
 
@@ -88,12 +88,17 @@ class UserTableCellView: UITableViewCell {
         usernameView.isAccessibilityElement = false
     }
 
-    private func setupLayoutMargins() {
-        contentView.layoutMargins = UIEdgeInsets(
+    private func setupLayoutMarginsAndInsets() {
+        // Match seperator inset to content directional margings
+        separatorInset = UIEdgeInsets(top: 0, left: Constants.cellContentInsetHorizontal, bottom: 0, right: 0)
+
+        // Set directional layout margin for the cells content view
+        contentView.preservesSuperviewLayoutMargins = false
+        contentView.directionalLayoutMargins = NSDirectionalEdgeInsets(
             top: Constants.cellContentInsetVertical,
-            left: Constants.cellContentInsetHorizontal,
+            leading: Constants.cellContentInsetHorizontal,
             bottom: Constants.cellContentInsetVertical,
-            right: Constants.cellContentInsetHorizontal)
+            trailing: Constants.cellContentInsetHorizontal)
     }
 
     private func activateConstraints() {

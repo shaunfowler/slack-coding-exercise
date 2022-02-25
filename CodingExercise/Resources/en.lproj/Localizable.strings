@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  CodingExercise
+
+ Created by Slack Candidate on 2/26/22.
+  Copyright © 2022 slack. All rights reserved.
+*/
+
+"Search-TextField-Placeholder" = "Search";
+
+"Search-Message-InitialState" = "Search to get started.";
+"Search-Message-NoResults" = "No matches found.";
+"Search-Message-Error" = "Something went wrong while searching.";
+
+"SearchResult-AccessibilityLabel" = "";

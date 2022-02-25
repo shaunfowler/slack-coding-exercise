@@ -45,10 +45,11 @@ extension UIFont {
     /// - Parameter style: The `UIFont.TextStyle`.
     /// - Returns: A `UIFont` with dynamic type enabled.
     static func lato(_ style: UIFont.TextStyle) -> UIFont {
+        let metrics = UIFontMetrics(forTextStyle: style)
         guard let font = latoFontStyles[style] else {
-            return .preferredFont(forTextStyle: .body)
+            return metrics.scaledFont(for: .preferredFont(forTextStyle: .body))
         }
-        return UIFontMetrics(forTextStyle: style).scaledFont(for: font)
+        return metrics.scaledFont(for: font)
     }
 
     /// Get a Lato font with a custom weight and size. The font adjusts for dynamic type.

@@ -11,7 +11,7 @@ import Combine
 protocol AutocompleteViewModelDelegate: AnyObject {
 
     /// Indicates the data model has changed. If an error ocurred, the error parameter will not be nil.
-    func onUsersDataUpdated(users: [UserSearchResult], withError error: SlackError?)
+    func onUsersDataUpdated(users: [UserSearchResult], forSearchTerm searchTerm: String?, withError error: SlackError?)
 }
 
 protocol AutocompleteViewModelInterface {
@@ -34,7 +34,7 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     // MARK: - Internal Types
 
     private enum Constants {
-        static let searchDebounceInSeconds: TimeInterval = 0.33
+        static let searchDebounceInSeconds: TimeInterval = 0.25
     }
 
     // MARK: - Private Properties
@@ -53,7 +53,7 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     init(dataProvider: UserSearchResultDataProviderInterface) {
         self.resultsDataProvider = dataProvider
         monitorSearchText()
-        searchText.send("A")
+        // searchText.send("A")
     }
 
     // MARK: - Public Functions
@@ -83,9 +83,10 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
                 switch result {
                 case .success(let users):
                     self.users = users
-                    self.delegate?.onUsersDataUpdated(users: users, withError: nil)
+                    self.delegate?.onUsersDataUpdated(users: users, forSearchTerm: searchTerm, withError: nil)
                 case .failure(let error):
-                    self.delegate?.onUsersDataUpdated(users: [], withError: error)
+                    self.users = []
+                    self.delegate?.onUsersDataUpdated(users: [], forSearchTerm: searchTerm, withError: error)
                 }
             }
         }
@@ -103,7 +104,7 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
                     self.fetchUsers(searchTerm: text)
                 } else {
                     self.users = []
-                    self.delegate?.onUsersDataUpdated(users: [], withError: nil)
+                    self.delegate?.onUsersDataUpdated(users: [], forSearchTerm: nil, withError: nil)
                 }
             }
             .store(in: &subscriptions)
