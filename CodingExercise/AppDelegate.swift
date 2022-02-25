@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        let dataProvider = UserSearchResultDataProvider(slackAPI: SlackApi.shared)
+        let dataProvider = UserSearchResultDataProvider(slackAPI: SlackApi.shared, denyList: DynamicDenyList())
         let viewModel = AutocompleteViewModel(dataProvider: dataProvider)
 
         let autocompleteViewController = AutocompleteViewController(viewModel: viewModel)
