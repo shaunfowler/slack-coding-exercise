@@ -11,9 +11,9 @@ import Foundation
 
 class MockSlackAPIService: SlackAPIInterface {
 
-    var onFetchUsersCalled: ((String, ([UserSearchResult]) -> Void) -> Void)?
+    var onFetchUsersCalled: ((String, (Result<[UserSearchResult], SlackError>) -> Void) -> Void)?
 
-    func fetchUsers(_ searchTerm: String, completionHandler: @escaping ([UserSearchResult]) -> Void) {
-        onFetchUsersCalled?(searchTerm, completionHandler) ?? completionHandler([])
+    func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SlackError>) -> Void) {
+        onFetchUsersCalled?(searchTerm, completionHandler) ?? completionHandler(.success([]))
     }
 }
