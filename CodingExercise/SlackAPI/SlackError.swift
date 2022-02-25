@@ -8,15 +8,11 @@
 
 import Foundation
 
-enum SlackError: Error, CustomStringConvertible {
+/// Errors produced by the Slack API.
+enum SlackError: Error {
     case invalidData
     case notSuccess(Int)
     case unknown(Error?)
-
-    var description: String {
-        // The specifics of the current error types don't matter from a customer POV.
-        "Something went wrong while searching 👀. Please try again."
-    }
 }
 
 extension SlackError: Equatable {

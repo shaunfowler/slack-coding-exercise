@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 // MARK: - Interfaces
 
@@ -43,6 +44,8 @@ class SlackApi: SlackAPIInterface {
         let queryItemQuery = URLQueryItem(name: "query", value: searchTerm)
         urlComponents.queryItems = [queryItemQuery]
 
+        // TODO: Generic request interface
+
         guard let url = urlComponents.url else { return }
         dataTask = defaultSession.dataTask(with: url) { [weak self] data, response, error in
 
@@ -62,20 +65,22 @@ class SlackApi: SlackAPIInterface {
 
             guard let self = self else { return }
 
+            // if searchTerm == "!!!" { errorToReturn = .unknown(nil) } // test errors
+
             if let error = error {
-                NSLog("[API] Request failed with error: \(error.localizedDescription)")
+                Logger.slackApi.error("Request failed with error: \(error.localizedDescription).")
                 errorToReturn = .unknown(error)
                 return
             }
 
             guard let data = data, let response = response as? HTTPURLResponse else {
-                NSLog("[API] Request returned an invalid response")
+                Logger.slackApi.error("Request returned an invalid response.")
                 errorToReturn = .invalidData
                 return
             }
 
             guard response.statusCode == 200 else {
-                NSLog("[API] Request returned an unsupported status code: \(response.statusCode)")
+                Logger.slackApi.error("Request returned an unsupported status code: \(response.statusCode).")
                 errorToReturn = .notSuccess(response.statusCode)
                 return
             }
@@ -84,7 +89,7 @@ class SlackApi: SlackAPIInterface {
                 let result = try self.decoder.decode(SearchResponse.self, from: data)
                 resultsToReturn = result.users
             } catch {
-                NSLog("[API] Decoding failed with error: \(error)")
+                Logger.slackApi.error("Decoding failed with error: \(error.localizedDescription).")
             }
         }
 

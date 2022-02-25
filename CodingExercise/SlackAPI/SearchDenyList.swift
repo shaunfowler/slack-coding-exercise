@@ -16,7 +16,8 @@ protocol DenyList {
 }
 
 /// A deny-list that persists newly added terms.
-/// The deny list will keep newly added terms in memory until the app state becomes inactive, and which time the deny list will be persisted.
+/// The deny list will keep newly added terms in memory until the app state becomes inactive,
+/// and which time the deny list will be persisted.
 class DynamicDenyList {
 
     private enum Constants {
@@ -91,15 +92,18 @@ class DynamicDenyList {
 
 extension DynamicDenyList: DenyList {
 
+    /// Check if a term is contained in the deny list.
+    /// - Parameter term: The term to check for.
+    /// - Returns: True if the term is in the deny list.
     func contains(term: String) -> Bool {
         denyListTerms.contains(term.lowercased())
     }
 
+    /// Insert a term into the denylist.
+    /// - Parameter term: The term to insert.
     func insert(term: String) {
         let processedTerm = term.lowercased()
-        if !denyListTerms.contains(processedTerm) {
-            denyListTerms.insert(processedTerm)
-        }
+        denyListTerms.insert(processedTerm) // no effect if already in the set
     }
 }
 

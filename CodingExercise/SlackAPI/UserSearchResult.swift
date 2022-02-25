@@ -7,12 +7,14 @@
 
 import Foundation
 
+/// A user search result from the Slack API.
 struct UserSearchResult: Codable {
     let avatarUrl: URL
     let displayName: String
     let username: String
 }
 
+/// A top-level search response object from the Slack API.
 struct SearchResponse: Codable {
     let ok: Bool
     let error: String?

@@ -6,45 +6,52 @@
 //
 
 import Foundation
+import OSLog
 
-// MARK: - Interfaces
-
+/// An interface for fetching users by search term.
 protocol UserSearchResultDataProviderInterface {
-    /*
-     * Fetches users from that match a given a search term
-     */
+
+    /// Fetches users from that match a given a search term
     func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SlackError>) -> Void)
 }
 
+/// A data provider for Slack user search. This data provider handles caching of search results.
 class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
     
     private var slackAPI: SlackAPIInterface
     private var denyList: DenyList
 
+    /// Creates a new data provider.
+    /// - Parameters:
+    ///   - slackAPI: The API to fetch data from.
+    ///   - denyList: A deny list indicating which search terms to ignore.
     init(slackAPI: SlackAPIInterface, denyList: DenyList) {
         self.slackAPI = slackAPI
         self.denyList = denyList
     }
 
+    /// Fetch users asynchronously.
+    /// - Parameters:
+    ///   - searchTerm: A search term to match against users and user names. This is a prefix search.
+    ///   - completionHandler: Closure to be invoked once search results are ready.
     func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SlackError>) -> Void) {
 
         if denyList.contains(term: searchTerm) {
-            NSLog("Search term is in deny list, ignoring search.")
+            Logger.slackDataProvider.debug("Search term '\(searchTerm, privacy: .private)' is in deny list, ignoring search.")
             completionHandler(.success([]))
             return
         }
 
         self.slackAPI.fetchUsers(searchTerm) { [weak self] usersResult in
-
             switch usersResult {
             case .success(let users):
                 if users.isEmpty {
-                    NSLog("Search term returned no results, adding to deny list.")
+                    Logger.slackDataProvider.debug("Search term '\(searchTerm, privacy: .private)', adding to deny list.")
                     self?.denyList.insert(term: searchTerm)
                 }
                 completionHandler(.success(users))
             case .failure(let error):
-                NSLog("Error fetching users: \(error).")
+                Logger.slackDataProvider.error("Error fetching users: \(error.localizedDescription).")
                 completionHandler(.failure(error))
             }
         }
