@@ -15,10 +15,8 @@ class AutocompleteViewController: UIViewController {
         static let textFieldPlaceholder = "Search"
         static let cellIdentifier = "UserSearchCell"
         static let cellRowHeight: CGFloat = 44.0
-        static let topSpacing: CGFloat = 10.0
-        static let leadingSpacing: CGFloat = 20.0
-        static let bottomSpacing: CGFloat = 20.0
-        static let trailingSpacing: CGFloat = -20.0
+        static let verticalSpacing: CGFloat = 8.0
+        static let horizontalSpacing: CGFloat = 16.0
     }
 
     // MARK: - Private Properties
@@ -70,7 +68,9 @@ class AutocompleteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
+
         setupSubviews()
+        setupAccessibility()
         monitorKeyboard()
     }
 
@@ -78,20 +78,24 @@ class AutocompleteViewController: UIViewController {
         view.addSubview(searchTextField)
         view.addSubview(searchResultsTableView)
 
-        setupConstraints()
-    }
-
-    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.topSpacing),
-            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingSpacing),
-            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: Constants.trailingSpacing),
+            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.verticalSpacing),
+            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.horizontalSpacing),
+            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.horizontalSpacing),
 
-            searchResultsTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: Constants.bottomSpacing),
+            searchResultsTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: Constants.verticalSpacing),
             searchResultsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             searchResultsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            searchResultsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            searchResultsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.verticalSpacing)
         ])
+    }
+
+    private func setupAccessibility() {
+        searchTextField.isAccessibilityElement = true
+        searchTextField.accessibilityTraits = [.searchField]
+
+        searchResultsTableView.isAccessibilityElement = false
+        searchResultsTableView.shouldGroupAccessibilityChildren = true
     }
 
     private func monitorKeyboard() {
