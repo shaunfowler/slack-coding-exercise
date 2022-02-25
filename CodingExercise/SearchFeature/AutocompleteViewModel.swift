@@ -56,7 +56,6 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     init(dataProvider: UserSearchResultDataProviderInterface) {
         self.resultsDataProvider = dataProvider
         monitorSearchText()
-        searchText.send("Al")
     }
 
     func updateSearchText(text: String?) {
@@ -91,7 +90,6 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     private func monitorSearchText() {
         searchText
             .debounce(for: .init(Constants.searchDebounceInSeconds), scheduler: RunLoop.main)
-            .print()
             .sink { [weak self] text in
                 if let self = self, let text = text {
                     self.performSearch(text: text)

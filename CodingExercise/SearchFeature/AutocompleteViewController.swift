@@ -32,6 +32,7 @@ class AutocompleteViewController: UIViewController {
         textField.font = .lato(.body)
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.becomeFirstResponder()
         return textField
     }()
 
