@@ -66,8 +66,26 @@ class UserTableCellView: UITableViewCell {
         addSubview(nameView)
         addSubview(usernameView)
 
+        setupAccessibility()
         setupLayoutMargins()
         activateConstraints()
+    }
+
+    override var accessibilityLabel: String? {
+        get { "Search result" }
+        set { }
+    }
+
+    override var accessibilityValue: String? {
+        get { nameView.text }
+        set { }
+    }
+
+    private func setupAccessibility() {
+        isAccessibilityElement = true
+        avatarView.isAccessibilityElement = false
+        nameView.isAccessibilityElement = false
+        usernameView.isAccessibilityElement = false
     }
 
     private func setupLayoutMargins() {
