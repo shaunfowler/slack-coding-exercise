@@ -18,9 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        let dataProvider = UserSearchResultDataProvider(slackAPI: SlackApi.shared, denyList: DynamicDenyList())
+        // Create the (small) dependency tree.
+        let dataProvider = UserSearchResultDataProvider(slackAPI: SlackApi(), denyList: DynamicDenyList())
         let viewModel = AutocompleteViewModel(dataProvider: dataProvider)
 
+        // Create the main view controller and add it to the window.
         let autocompleteViewController = AutocompleteViewController(viewModel: viewModel)
         window?.makeKeyAndVisible()
         window?.backgroundColor = UIColor.white

@@ -110,6 +110,7 @@ class AutocompleteViewController: UIViewController {
     }
 
     @objc func keyboardWillShow(_ notification: Notification) {
+        // Update table view content insets to consider vertical space the keyboard fills.
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height - view.safeAreaInsets.bottom, right: 0)
         searchResultsTableView.contentInset = insets
@@ -117,14 +118,16 @@ class AutocompleteViewController: UIViewController {
     }
 
     @objc func keyboardWillHide(_ notification: Notification) {
+        // Remove content insets when keyboard will be hidden.
         searchResultsTableView.contentInset = .zero
         searchResultsTableView.scrollIndicatorInsets = .zero
     }
 }
 
 extension AutocompleteViewController: AutocompleteViewModelDelegate {
-    func usersDataUpdated() {
+    func onUsersDataUpdated(users: [UserSearchResult], withError error: SlackError?) {
         searchResultsTableView.reloadData()
+        // TODO: display user-friendly error message
     }
 }
 
@@ -155,4 +158,3 @@ extension AutocompleteViewController: UITableViewDataSource, UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
-

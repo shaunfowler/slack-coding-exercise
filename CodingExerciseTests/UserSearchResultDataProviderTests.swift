@@ -28,7 +28,7 @@ class UserSearchResultDataProviderTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Search term was passed to API")
         mockApiService.onFetchUsersCalled = { term, completion in
             XCTAssertEqual(term, self.testSearchTerm)
-            completion([self.testUser])
+            completion(.success([self.testUser]))
             expectation.fulfill()
         }
 
@@ -58,4 +58,28 @@ class UserSearchResultDataProviderTests: XCTestCase {
         // Assert
         wait(for: [expectation], timeout: 1)
     }
+
+    func testDataProviderReceivesErrorFromApi() {
+
+        // Arrange
+        let expectation = XCTestExpectation(description: "Data provider received expected error")
+        mockApiService.onFetchUsersCalled = { term, completion in
+            XCTAssertEqual(term, self.testSearchTerm)
+            completion(.failure(.notSuccess(400)))
+        }
+
+        // Act
+        let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
+        dataProvider.fetchUsers(testSearchTerm) { result in
+            guard case let .failure(.notSuccess(statusCode)) = result, statusCode == 400 else {
+                XCTFail("Unexpected error type")
+                return
+            }
+            expectation.fulfill()
+        }
+
+        // Assert
+        wait(for: [expectation], timeout: 1)
+    }
+
 }
