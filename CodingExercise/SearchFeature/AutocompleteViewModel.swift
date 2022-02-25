@@ -56,6 +56,7 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     init(dataProvider: UserSearchResultDataProviderInterface) {
         self.resultsDataProvider = dataProvider
         monitorSearchText()
+        searchText.send("A")
     }
 
     func updateSearchText(text: String?) {

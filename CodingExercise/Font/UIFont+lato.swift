@@ -60,9 +60,9 @@ extension UIFont {
         let metrics = UIFontMetrics(forTextStyle: .body)
         switch weight {
         case .bold:
-            return metrics.scaledFont(for: UIFont(name: "Lato-Bold", size: size)!)
+            return metrics.scaledFont(for: UIFont(name: LatoFontName.bold, size: size)!)
         default:
-            return UIFont(name: "Lato-Regular", size: size)!
+            return UIFont(name: LatoFontName.regular, size: size)!
         }
     }
 }

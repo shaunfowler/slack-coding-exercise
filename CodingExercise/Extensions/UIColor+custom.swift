@@ -11,6 +11,7 @@ import UIKit
 
 extension UIColor {
     // Force-unwrap UIColor as if these are not set, the Assets colors sets are configured incorrectly
+    static let customBackground = UIColor(named: "CustomBackground")!
     static let customPrimaryText = UIColor(named: "CustomPrimaryText")!
     static let customSecondaryText = UIColor(named: "CustomSecondaryText")!
     static let imagePlaceholderBackground = UIColor(named: "ImagePlaceholderBackground")!

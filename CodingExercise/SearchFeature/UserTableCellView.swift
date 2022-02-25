@@ -9,7 +9,6 @@
 import UIKit
 import Kingfisher
 
-// TODO: Custom font
 class UserTableCellView: UITableViewCell {
 
     private enum Constants {
@@ -72,7 +71,11 @@ class UserTableCellView: UITableViewCell {
     }
 
     private func setupLayoutMargins() {
-        // TODO: use insets?
+        contentView.layoutMargins = UIEdgeInsets(
+            top: Constants.cellContentInsetVertical,
+            left: Constants.cellContentInsetHorizontal,
+            bottom: Constants.cellContentInsetVertical,
+            right: Constants.cellContentInsetHorizontal)
     }
 
     private func activateConstraints() {
