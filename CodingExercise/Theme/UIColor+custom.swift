@@ -14,6 +14,6 @@ extension UIColor {
     static let customBackground = UIColor(named: "CustomBackground")!
     static let customPrimaryText = UIColor(named: "CustomPrimaryText")!
     static let customSecondaryText = UIColor(named: "CustomSecondaryText")!
-    static let imagePlaceholderBackground = UIColor(named: "ImagePlaceholderBackground")!
+    static let customImagePlaceholderBackground = UIColor(named: "CustomImagePlaceholderBackground")!
     static let customSeparator = UIColor(named: "CustomSeparator")!
 }

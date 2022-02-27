@@ -37,7 +37,7 @@ class UserTableCellView: UITableViewCell {
     private let avatarView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .imagePlaceholderBackground
+        imageView.backgroundColor = .customImagePlaceholderBackground
         imageView.layer.cornerRadius = Constants.avatarCornerRadius
         imageView.clipsToBounds = true
         return imageView

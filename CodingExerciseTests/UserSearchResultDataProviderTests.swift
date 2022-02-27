@@ -13,12 +13,12 @@ class UserSearchResultDataProviderTests: XCTestCase {
     let testSearchTerm = "test123"
     let testUser = UserSearchResult(avatarUrl: URL(string: "http://example.com")!, displayName: "Jane", username: "jdoe")
 
-    var mockApiService: MockSlackAPIService!
+    var mockApiService: MockUserSearchService!
     var mockDenyList: MockDenyList!
 
     override func setUp() {
         super.setUp()
-        mockApiService = MockSlackAPIService()
+        mockApiService = MockUserSearchService()
         mockDenyList = MockDenyList()
     }
 
@@ -65,13 +65,13 @@ class UserSearchResultDataProviderTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Data provider received expected error")
         mockApiService.onFetchUsersCalled = { term, completion in
             XCTAssertEqual(term, self.testSearchTerm)
-            completion(.failure(.notSuccess(400)))
+            completion(.failure(.invalidUrl))
         }
 
         // Act
         let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
         dataProvider.fetchUsers(testSearchTerm) { result in
-            guard case let .failure(.notSuccess(statusCode)) = result, statusCode == 400 else {
+            guard case .failure(.invalidUrl) = result else {
                 XCTFail("Unexpected error type")
                 return
             }
