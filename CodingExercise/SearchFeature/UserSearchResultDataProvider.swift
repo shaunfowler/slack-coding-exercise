@@ -18,15 +18,15 @@ protocol UserSearchResultDataProviderInterface {
 /// A data provider for Slack user search. This data provider handles caching of search results.
 class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
 
-    private var slackAPI: UserSearchService
+    private var userSearchService: UserSearchService
     private var denyList: DenyList
 
     /// Creates a new data provider.
     /// - Parameters:
-    ///   - slackAPI: The API to fetch data from.
+    ///   - userSearchService: The service to fetch remote data from.
     ///   - denyList: A deny list indicating which search terms to ignore.
-    init(slackAPI: UserSearchService, denyList: DenyList) {
-        self.slackAPI = slackAPI
+    init(userSearchService: UserSearchService, denyList: DenyList) {
+        self.userSearchService = userSearchService
         self.denyList = denyList
     }
 
@@ -42,7 +42,7 @@ class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
             return
         }
 
-        self.slackAPI.fetchUsers(searchTerm) { [weak self] usersResult in
+        self.userSearchService.fetchUsers(searchTerm) { [weak self] usersResult in
             switch usersResult {
             case .success(let users):
                 if users.isEmpty {

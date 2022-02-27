@@ -33,7 +33,7 @@ class UserSearchResultDataProviderTests: XCTestCase {
         }
 
         // Act
-        let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
+        let dataProvider = UserSearchResultDataProvider(userSearchService: mockApiService, denyList: mockDenyList)
         dataProvider.fetchUsers(testSearchTerm) { _ in }
 
         // Assert
@@ -52,7 +52,7 @@ class UserSearchResultDataProviderTests: XCTestCase {
         mockDenyList.onContainsCalled = { _ in true } // indicates term is in deny list
 
         // Act
-        let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
+        let dataProvider = UserSearchResultDataProvider(userSearchService: mockApiService, denyList: mockDenyList)
         dataProvider.fetchUsers(testSearchTerm) { _ in }
 
         // Assert
@@ -69,7 +69,7 @@ class UserSearchResultDataProviderTests: XCTestCase {
         }
 
         // Act
-        let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
+        let dataProvider = UserSearchResultDataProvider(userSearchService: mockApiService, denyList: mockDenyList)
         dataProvider.fetchUsers(testSearchTerm) { result in
             guard case .failure(.invalidUrl) = result else {
                 XCTFail("Unexpected error type")
@@ -81,5 +81,4 @@ class UserSearchResultDataProviderTests: XCTestCase {
         // Assert
         wait(for: [expectation], timeout: 1)
     }
-
 }

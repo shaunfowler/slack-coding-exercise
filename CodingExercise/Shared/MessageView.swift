@@ -20,12 +20,19 @@ class MessageView: UIView {
     private lazy var label: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
+
+        // Font configuration.
         label.font = .lato(.callout)
-        label.adjustsFontForContentSizeCategory = true
         label.textColor = .customSecondaryText
         label.textAlignment = .center
-        label.numberOfLines = 0
+
+        // Enable accesibility font scaling up to the container width.
+        label.numberOfLines = 1
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+
         label.text = message
+
         return label
     }()
 
