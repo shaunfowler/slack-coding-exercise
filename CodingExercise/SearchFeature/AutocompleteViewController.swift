@@ -56,6 +56,8 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
         self.viewModel = viewModel
         self.dataSource = UserDataSource(tableView: searchResultsTableView)
         super.init(nibName: nil, bundle: nil)
+
+        searchResultsTableView.delegate = dataSource
         view.backgroundColor = .customBackground
     }
 
@@ -75,6 +77,7 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
 
     override func onKeyboardShowing(withFrame frame: CGRect) {
         super.onKeyboardShowing(withFrame: frame)
+        // Apply content insets to account for keyboard height.
         let insets = UIEdgeInsets(top: 0, left: 0, bottom: frame.height - view.safeAreaInsets.bottom, right: 0)
         searchResultsTableView.contentInset = insets
         searchResultsTableView.scrollIndicatorInsets = insets
@@ -93,15 +96,16 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
         view.addSubview(searchTextField)
         view.addSubview(searchResultsTableView)
 
+        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.verticalSpacing),
-            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.horizontalSpacing),
-            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.horizontalSpacing),
+            searchTextField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.verticalSpacing),
+            searchTextField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.horizontalSpacing),
+            searchTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constants.horizontalSpacing),
 
             searchResultsTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: Constants.verticalSpacing),
-            searchResultsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            searchResultsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            searchResultsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.verticalSpacing)
+            searchResultsTableView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            searchResultsTableView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            searchResultsTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constants.verticalSpacing)
         ])
     }
 
@@ -113,8 +117,8 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
         searchResultsTableView.shouldGroupAccessibilityChildren = true
     }
 
-    private func showTableViewMessage(message: String, level: MessageView.Level? = nil) {
-        searchResultsTableView.backgroundView = MessageView(message: message, level: level)
+    private func showTableViewMessage(message: String) {
+        searchResultsTableView.backgroundView = MessageView(message: message)
     }
 
     private func hideTableViewMessage() {
@@ -144,11 +148,11 @@ extension AutocompleteViewController: AutocompleteViewModelDelegate {
 
         case (_, _):
             // Show a generic error message.
-            showTableViewMessage(message: LocalizableKey.searchMessageError.localized, level: .warn)
+            showTableViewMessage(message: LocalizableKey.searchMessageError.localized)
         }
 
         // Update the table view data.
-        dataSource.updateSnapshot(data: users)
+        dataSource.update(data: users)
     }
 }
 

@@ -29,7 +29,8 @@ class KeyboardNotifyingViewController: UIViewController {
         super.viewDidDisappear(animated)
 
         // Unsubscribe from keyboard notifications.
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.keyboardWillHideNotification, object: nil)
     }
 
     @objc private func keyboardWillShow(_ notification: Notification) {

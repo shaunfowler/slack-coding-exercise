@@ -18,7 +18,7 @@ class SlackUserSearchUrlTests: XCTestCase {
             "https://slack-users.herokuapp.com/search?query=hello"
         )
     }
-    
+
     func testQueryUrlWithEncoding() {
         XCTAssertEqual(
             SlackUserSearchUrl.query("he llo !").url?.absoluteString,

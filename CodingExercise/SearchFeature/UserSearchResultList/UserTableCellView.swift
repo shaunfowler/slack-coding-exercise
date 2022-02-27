@@ -26,7 +26,7 @@ class UserTableCellView: UITableViewCell {
         static let usernameFontColor: UIColor = .customSecondaryText
     }
 
-    var avatarUrl: URL?  {
+    var avatarUrl: URL? {
         didSet {
             // Use Kingfisher for image loading + caching remote images
             // Credit: https://github.com/onevcat/Kingfisher
@@ -79,6 +79,12 @@ class UserTableCellView: UITableViewCell {
     override var accessibilityValue: String? {
         get { nameView.text }
         set { }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // Cancel download task if cell is about to be reused.
+        avatarView.kf.cancelDownloadTask()
     }
 
     private func setupAccessibility() {

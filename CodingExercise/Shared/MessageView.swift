@@ -11,32 +11,13 @@ import UIKit
 
 class MessageView: UIView {
 
-    enum Level: String {
-        case info = "info.circle"
-        case warn = "exclamationmark.triangle"
-        case error = "exclamationmark.octagon"
-    }
-
     private enum Constants {
-        static let levelIconSize: CGFloat = 48.0
-        static let messageSpacing: CGFloat = 16.0
+        static let spacing: CGFloat = 16.0
     }
 
-    private let level: Level?
     private let message: String
 
-    private func makeImageView(symbolName: String) -> UIImageView {
-        let symbolConfig = UIImage.SymbolConfiguration(pointSize: Constants.levelIconSize)
-        let image = UIImage(systemName: symbolName, withConfiguration: symbolConfig)
-
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .customSecondaryText
-        return imageView
-    }
-
-    private lazy var messageLabel: UILabel = {
+    private lazy var label: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .lato(.callout)
@@ -48,21 +29,8 @@ class MessageView: UIView {
         return label
     }()
 
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        if let level = level {
-            stackView.addArrangedSubview(makeImageView(symbolName: level.rawValue))
-        }
-        stackView.addArrangedSubview(messageLabel)
-        return stackView
-    }()
-
-    init(message: String, level: Level? = nil) {
+    init(message: String) {
         self.message = message
-        self.level = level
         super.init(frame: .zero)
     }
 
@@ -71,13 +39,12 @@ class MessageView: UIView {
     }
 
     override func layoutSubviews() {
-        addSubview(stackView)
+        addSubview(label)
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.messageSpacing),
-            stackView.topAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constants.messageSpacing),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
+            label.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            label.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.spacing),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.spacing)
         ])
     }
 }

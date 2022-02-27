@@ -100,15 +100,10 @@ class DynamicDenyList {
 
 extension DynamicDenyList: DenyList {
 
-    /// Check if a term is contained in the deny list.
-    /// - Parameter term: The term to check for.
-    /// - Returns: True if the term is in the deny list.
     func contains(term: String) -> Bool {
         denyListTrie.contains(term.lowercased())
     }
 
-    /// Insert a term into the denylist.
-    /// - Parameter term: The term to insert.
     func insert(term: String) {
         let processedTerm = term.lowercased()
         denyListTrie.insert(processedTerm)

@@ -9,7 +9,8 @@
 import Foundation
 import UIKit
 
-class UserDataSource: UITableViewDiffableDataSource<UserDataSource.Section, UserSearchResult> {
+/// A diffable data source for the user search result table view.
+class UserDataSource: UITableViewDiffableDataSource<UserDataSource.Section, UserSearchResult>, UITableViewDelegate {
 
     enum Section {
         case main
@@ -35,11 +36,15 @@ class UserDataSource: UITableViewDiffableDataSource<UserDataSource.Section, User
         }
     }
 
-    func updateSnapshot(data: [UserSearchResult]) {
+    func update(data: [UserSearchResult]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, UserSearchResult>()
         snapshot.appendSections([.main])
         snapshot.appendItems(data, toSection: .main)
         apply(snapshot)
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

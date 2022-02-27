@@ -1,0 +1,5 @@
+line_length:
+  warning: 140
+  error: 140
+  ignores_comments: false
+  ignores_urls: true

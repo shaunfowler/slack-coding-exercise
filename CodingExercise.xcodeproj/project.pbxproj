@@ -79,6 +79,7 @@
 		E674DE2727CB047C00361ED8 /* UserSeachServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeachServiceTests.swift; sourceTree = "<group>"; };
 		E674DE2927CB04AD00361ED8 /* MockNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkService.swift; sourceTree = "<group>"; };
 		E674DE6C27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackUserSearchUrlTests.swift; sourceTree = "<group>"; };
+		E674DE7227CB191F00361ED8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableCellView.swift; sourceTree = "<group>"; };
 		E69DFABA27C76B91003F9FE8 /* MockUserSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserSearchService.swift; sourceTree = "<group>"; };
 		E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+lato.swift"; sourceTree = "<group>"; };
@@ -114,6 +115,7 @@
 				6A29FD0320E6EB0F004885EC /* CodingExercise */,
 				6A29FD1820E6EB10004885EC /* CodingExerciseTests */,
 				6A29FD0220E6EB0F004885EC /* Products */,
+				E674DE7227CB191F00361ED8 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -257,6 +259,7 @@
 				6A29FCFD20E6EB0F004885EC /* Sources */,
 				6A29FCFE20E6EB0F004885EC /* Frameworks */,
 				6A29FCFF20E6EB0F004885EC /* Resources */,
+				E674DE7327CB292700361ED8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -355,6 +358,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E674DE7327CB292700361ED8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Source: https://github.com/realm/SwiftLint\n\nexport PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6A29FCFD20E6EB0F004885EC /* Sources */ = {
