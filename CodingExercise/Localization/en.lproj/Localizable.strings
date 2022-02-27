@@ -6,7 +6,7 @@
   Copyright © 2022 slack. All rights reserved.
 */
 
-"Search-TextField-Placeholder" = "Search";
+"Search-TextField-Placeholder" = "Search by name or username";
 
 "Search-Message-InitialState" = "Search to get started.";
 "Search-Message-NoResults" = "No matches found.";
