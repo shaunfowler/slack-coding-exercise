@@ -129,13 +129,12 @@
 		6A29FD0320E6EB0F004885EC /* CodingExercise */ = {
 			isa = PBXGroup;
 			children = (
-				E674DE2427CAF4E600361ED8 /* Theme */,
-				E66A227627CA2422001D2A63 /* Logger */,
 				E66A222D27CA191B001D2A63 /* Localization */,
-				E6C396AA27C8BF4F00613165 /* Shared */,
+				E66A227627CA2422001D2A63 /* Logger */,
 				6AE88E2F222758CA0032677C /* Resources */,
 				E69DFAB727C750A8003F9FE8 /* SearchFeature */,
-				6A29FD2520E6EC09004885EC /* SlackAPI */,
+				E6C396AA27C8BF4F00613165 /* Shared */,
+				E674DE2427CAF4E600361ED8 /* Theme */,
 				6A29FD0420E6EB0F004885EC /* AppDelegate.swift */,
 				6A29FD0B20E6EB0F004885EC /* Assets.xcassets */,
 				6A29FD1020E6EB0F004885EC /* Info.plist */,
@@ -154,20 +153,21 @@
 				6A29FD1920E6EB10004885EC /* UserSearchResultDataProviderTests.swift */,
 				E674DE2727CB047C00361ED8 /* UserSeachServiceTests.swift */,
 				E674DE6C27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift */,
+				E674DE2727CB047C00361ED8 /* UserSeachServiceTests.swift */,
+				6A29FD1920E6EB10004885EC /* UserSearchResultDataProviderTests.swift */,
 			);
 			path = CodingExerciseTests;
 			sourceTree = "<group>";
 		};
-		6A29FD2520E6EC09004885EC /* SlackAPI */ = {
+		6A29FD2520E6EC09004885EC /* UserSearchService */ = {
 			isa = PBXGroup;
 			children = (
 				E69DFAC527C843C6003F9FE8 /* SearchDenyList.swift */,
-				6A29FD2820E6EC2F004885EC /* SlackUserSearchService.swift */,
 				E6C396A427C8902300613165 /* SearchError.swift */,
+				6A29FD2820E6EC2F004885EC /* SlackUserSearchService.swift */,
 				6A29FD2620E6EC1F004885EC /* UserSearchResult.swift */,
-				6A29FD2C20E6EC79004885EC /* UserSearchResultDataProvider.swift */,
 			);
-			path = SlackAPI;
+			path = UserSearchService;
 			sourceTree = "<group>";
 		};
 		6AE88E2F222758CA0032677C /* Resources */ = {
@@ -181,8 +181,8 @@
 		E66A222D27CA191B001D2A63 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				E66A222B27CA181C001D2A63 /* LocalizableKey.swift */,
 				E66A222A27CA17DC001D2A63 /* Localizable.strings */,
+				E66A222B27CA181C001D2A63 /* LocalizableKey.swift */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -195,22 +195,22 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
-		E674DD4227CAE03300361ED8 /* UserResultList */ = {
+		E674DD4227CAE03300361ED8 /* UserSearchResultList */ = {
 			isa = PBXGroup;
 			children = (
-				E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */,
 				E674DD4327CAE05C00361ED8 /* UserDataSource.swift */,
+				E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */,
 			);
-			path = UserResultList;
+			path = UserSearchResultList;
 			sourceTree = "<group>";
 		};
 		E674DE2427CAF4E600361ED8 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */,
-				E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */,
 				6AE88E33222759D80032677C /* Lato-Bold.ttf */,
 				6AE88E34222759D90032677C /* Lato-Regular.ttf */,
+				E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */,
+				E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -218,9 +218,11 @@
 		E69DFAB727C750A8003F9FE8 /* SearchFeature */ = {
 			isa = PBXGroup;
 			children = (
-				E674DD4227CAE03300361ED8 /* UserResultList */,
+				E674DD4227CAE03300361ED8 /* UserSearchResultList */,
+				6A29FD2520E6EC09004885EC /* UserSearchService */,
 				6A29FD0620E6EB0F004885EC /* AutocompleteViewController.swift */,
 				6AF5D92720EC255B008186C3 /* AutocompleteViewModel.swift */,
+				6A29FD2C20E6EC79004885EC /* UserSearchResultDataProvider.swift */,
 			);
 			path = SearchFeature;
 			sourceTree = "<group>";
@@ -229,8 +231,8 @@
 			isa = PBXGroup;
 			children = (
 				E69DFAC727C85E5D003F9FE8 /* MockDenyList.swift */,
-				E69DFABA27C76B91003F9FE8 /* MockUserSearchService.swift */,
 				E674DE2927CB04AD00361ED8 /* MockNetworkService.swift */,
+				E69DFABA27C76B91003F9FE8 /* MockUserSearchService.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -238,8 +240,8 @@
 		E6C396AA27C8BF4F00613165 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				E6C396AB27C8C09200613165 /* MessageView.swift */,
 				E674DE2227CAEF9F00361ED8 /* KeyboardNotifyingViewController.swift */,
+				E6C396AB27C8C09200613165 /* MessageView.swift */,
 				E674DE2527CB030100361ED8 /* NetworkService.swift */,
 			);
 			path = Shared;
@@ -337,10 +339,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A29FD0C20E6EB0F004885EC /* Assets.xcassets in Resources */,
-				E66A222827CA17DC001D2A63 /* Localizable.strings in Resources */,
 				6AE88E35222759D90032677C /* Lato-Bold.ttf in Resources */,
 				6AE88E36222759D90032677C /* Lato-Regular.ttf in Resources */,
 				6AC4866E21F2AB700068D741 /* LaunchScreen.storyboard in Resources */,
+				E66A222827CA17DC001D2A63 /* Localizable.strings in Resources */,
 				0FEDCF0524F89B5200358051 /* denylist.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,21 +361,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E674DE2327CAEF9F00361ED8 /* KeyboardNotifyingViewController.swift in Sources */,
-				E6C396AC27C8C09200613165 /* MessageView.swift in Sources */,
 				6A29FD0520E6EB0F004885EC /* AppDelegate.swift in Sources */,
 				6A29FD0720E6EB0F004885EC /* AutocompleteViewController.swift in Sources */,
+				6AF5D92820EC255B008186C3 /* AutocompleteViewModel.swift in Sources */,
+				E674DE2327CAEF9F00361ED8 /* KeyboardNotifyingViewController.swift in Sources */,
 				E66A222C27CA181C001D2A63 /* LocalizableKey.swift in Sources */,
 				E66A227527CA2418001D2A63 /* LoggerExtensions.swift in Sources */,
-				6AF5D92820EC255B008186C3 /* AutocompleteViewModel.swift in Sources */,
+				E6C396AC27C8C09200613165 /* MessageView.swift in Sources */,
+				E674DE2627CB030100361ED8 /* NetworkService.swift in Sources */,
 				E69DFAC627C843C6003F9FE8 /* SearchDenyList.swift in Sources */,
 				E674DE7A27CC05A300361ED8 /* Trie.swift in Sources */,
 				6A29FD2920E6EC2F004885EC /* SlackUserSearchService.swift in Sources */,
 				E674DD4427CAE05C00361ED8 /* UserDataSource.swift in Sources */,
 				E6C396A527C8902300613165 /* SearchError.swift in Sources */,
-				E674DE2627CB030100361ED8 /* NetworkService.swift in Sources */,
+				6A29FD2920E6EC2F004885EC /* SlackUserSearchService.swift in Sources */,
 				E69DFAC427C83C1C003F9FE8 /* UIColor+custom.swift in Sources */,
 				E69DFABE27C82E8F003F9FE8 /* UIFont+lato.swift in Sources */,
+				E674DD4427CAE05C00361ED8 /* UserDataSource.swift in Sources */,
 				6A29FD2720E6EC1F004885EC /* UserSearchResult.swift in Sources */,
 				6A29FD2D20E6EC79004885EC /* UserSearchResultDataProvider.swift in Sources */,
 				E69DFAB927C75329003F9FE8 /* UserTableCellView.swift in Sources */,
@@ -390,6 +394,8 @@
 				E674DE2827CB047C00361ED8 /* UserSeachServiceTests.swift in Sources */,
 				E674DE2A27CB04AD00361ED8 /* MockNetworkService.swift in Sources */,
 				E69DFABB27C76B91003F9FE8 /* MockUserSearchService.swift in Sources */,
+				E674DE6D27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift in Sources */,
+				E674DE2827CB047C00361ED8 /* UserSeachServiceTests.swift in Sources */,
 				6A29FD1A20E6EB10004885EC /* UserSearchResultDataProviderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
