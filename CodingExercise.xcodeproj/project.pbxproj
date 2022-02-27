@@ -30,6 +30,8 @@
 		E674DE6D27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E674DE6C27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift */; };
 		E674DE7627CB31A800361ED8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E674DE7527CB31A800361ED8 /* SceneDelegate.swift */; };
 		E674DE7827CB331800361ED8 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E674DE7727CB331800361ED8 /* DependencyContainer.swift */; };
+		E674DE7A27CC05A300361ED8 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E674DE7927CC05A300361ED8 /* Trie.swift */; };
+		E674DE7C27CC08CB00361ED8 /* TrieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E674DE7B27CC08CB00361ED8 /* TrieTests.swift */; };
 		E69DFAB927C75329003F9FE8 /* UserTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */; };
 		E69DFABB27C76B91003F9FE8 /* MockUserSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFABA27C76B91003F9FE8 /* MockUserSearchService.swift */; };
 		E69DFABE27C82E8F003F9FE8 /* UIFont+lato.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */; };
@@ -80,6 +82,8 @@
 		E674DE7227CB191F00361ED8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E674DE7527CB31A800361ED8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E674DE7727CB331800361ED8 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
+		E674DE7927CC05A300361ED8 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
+		E674DE7B27CC08CB00361ED8 /* TrieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTests.swift; sourceTree = "<group>"; };
 		E69DFAB827C75329003F9FE8 /* UserTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableCellView.swift; sourceTree = "<group>"; };
 		E69DFABA27C76B91003F9FE8 /* MockUserSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserSearchService.swift; sourceTree = "<group>"; };
 		E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+lato.swift"; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 				6A29FD0B20E6EB0F004885EC /* Assets.xcassets */,
 				6A29FD1020E6EB0F004885EC /* Info.plist */,
 				6AC4866D21F2AB700068D741 /* LaunchScreen.storyboard */,
+				E674DE7927CC05A300361ED8 /* Trie.swift */,
 			);
 			path = CodingExercise;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			children = (
 				E69DFAC927C8600F003F9FE8 /* Mocks */,
 				6A29FD1B20E6EB10004885EC /* Info.plist */,
+				E674DE7B27CC08CB00361ED8 /* TrieTests.swift */,
 				E674DE6C27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift */,
 				E674DE2727CB047C00361ED8 /* UserSeachServiceTests.swift */,
 				6A29FD1920E6EB10004885EC /* UserSearchResultDataProviderTests.swift */,
@@ -217,8 +223,8 @@
 			isa = PBXGroup;
 			children = (
 				6A29FD0420E6EB0F004885EC /* AppDelegate.swift */,
-				E674DE7527CB31A800361ED8 /* SceneDelegate.swift */,
 				E674DE7727CB331800361ED8 /* DependencyContainer.swift */,
+				E674DE7527CB31A800361ED8 /* SceneDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -392,17 +398,18 @@
 			files = (
 				6A29FD0520E6EB0F004885EC /* AppDelegate.swift in Sources */,
 				6A29FD0720E6EB0F004885EC /* AutocompleteViewController.swift in Sources */,
-				E674DE7827CB331800361ED8 /* DependencyContainer.swift in Sources */,
 				6AF5D92820EC255B008186C3 /* AutocompleteViewModel.swift in Sources */,
+				E674DE7827CB331800361ED8 /* DependencyContainer.swift in Sources */,
 				E674DE2327CAEF9F00361ED8 /* KeyboardNotifyingViewController.swift in Sources */,
 				E66A222C27CA181C001D2A63 /* LocalizableKey.swift in Sources */,
 				E66A227527CA2418001D2A63 /* LoggerExtensions.swift in Sources */,
 				E6C396AC27C8C09200613165 /* MessageView.swift in Sources */,
 				E674DE2627CB030100361ED8 /* NetworkService.swift in Sources */,
+				E674DE7A27CC05A300361ED8 /* Trie.swift in Sources */,
+				E674DE7627CB31A800361ED8 /* SceneDelegate.swift in Sources */,
 				E69DFAC627C843C6003F9FE8 /* SearchDenyList.swift in Sources */,
 				E6C396A527C8902300613165 /* SearchError.swift in Sources */,
 				6A29FD2920E6EC2F004885EC /* SlackUserSearchService.swift in Sources */,
-				E674DE7627CB31A800361ED8 /* SceneDelegate.swift in Sources */,
 				E69DFAC427C83C1C003F9FE8 /* UIColor+custom.swift in Sources */,
 				E69DFABE27C82E8F003F9FE8 /* UIFont+lato.swift in Sources */,
 				E674DD4427CAE05C00361ED8 /* UserDataSource.swift in Sources */,
@@ -419,6 +426,7 @@
 				E69DFAC827C85E5D003F9FE8 /* MockDenyList.swift in Sources */,
 				E674DE2A27CB04AD00361ED8 /* MockNetworkService.swift in Sources */,
 				E69DFABB27C76B91003F9FE8 /* MockUserSearchService.swift in Sources */,
+				E674DE7C27CC08CB00361ED8 /* TrieTests.swift in Sources */,
 				E674DE6D27CB0A4400361ED8 /* SlackUserSearchUrlTests.swift in Sources */,
 				E674DE2827CB047C00361ED8 /* UserSeachServiceTests.swift in Sources */,
 				6A29FD1A20E6EB10004885EC /* UserSearchResultDataProviderTests.swift in Sources */,

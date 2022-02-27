@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import OSLog
 import Combine
 
 protocol DenyList {
@@ -28,32 +29,31 @@ protocol DenyList {
 class DynamicDenyList {
 
     private enum Constants {
-        static let userDefaultsKey = "deny-list"
+        static let denyListKey = "denylist-trie"
         static let denyListSeedPath = Bundle.main.path(forResource: "denylist", ofType: "txt")
     }
 
-    private var denyListTerms = Set<String>()
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
+    private var denyListTrie = Trie()
     private var subscriptions = Set<AnyCancellable>()
 
-    // Optimization: Use LRU cache or something that prevents the entire denylist from being loaded in memory in case it gets large
-    private var persistedDenyList: [String]? {
-        UserDefaults.standard.array(forKey: Constants.userDefaultsKey) as? [String]
-    }
-
     init() {
-        // Clear for testing
-        // UserDefaults.standard.set(nil, forKey: "deny-list")
+        // Uncomment for testing
+        // UserDefaults.standard.set(nil, forKey: Constants.denyListKey)
 
-        // If a deny list has never been loaded, load the denylist.txt from the bundle.
-        // Else restore from UserDefaults.
-        if !denyListExists() {
+        // Restore cached denylist
+        restore()
+
+        // If a deny list has never been loaded from the seed file, load the denylist.txt from the bundle.
+        if denyListTrie.isEmpty {
+            Logger.slackDataProvider.log("Seeding denylist...")
             seedDenyList()
-        } else {
-            restoreDenyList()
         }
 
         // Monitor when app goes inactive to save in-memory deny list to UserDefaults.
         // This batch saves all new deny list items since the last app inactive state.
+        // The goal is to prevent unecessary CPU cycles on serialization.
         monitor()
     }
 
@@ -63,27 +63,28 @@ class DynamicDenyList {
         NotificationCenter.default
             .publisher(for: UIApplication.willResignActiveNotification)
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                UserDefaults.standard.set(Array(self.denyListTerms), forKey: Constants.userDefaultsKey)
+                self?.persist()
             }
             .store(in: &subscriptions)
     }
 
-    private func denyListExists() -> Bool {
-        if let existing = persistedDenyList, !existing.isEmpty {
-            return true
-        }
-        return false
-    }
-
     private func seedDenyList() {
         let denyList = loadDefaultDenyList()
-        denyListTerms = Set(denyList)
-        UserDefaults.standard.set(denyList, forKey: Constants.userDefaultsKey)
+        denyList.forEach { denyListTrie.insert($0) }
+        persist()
     }
 
-    private func restoreDenyList() {
-        denyListTerms = Set(persistedDenyList ?? [])
+    private func persist() {
+        if let data = try? encoder.encode(denyListTrie) {
+            UserDefaults.standard.set(data, forKey: Constants.denyListKey)
+        }
+    }
+
+    private func restore() {
+        if let data = UserDefaults.standard.data(forKey: Constants.denyListKey),
+           let decoded = try? decoder.decode(Trie.self, from: data) {
+            denyListTrie = decoded
+        }
     }
 
     private func loadDefaultDenyList() -> [String] {
@@ -101,11 +102,11 @@ class DynamicDenyList {
 extension DynamicDenyList: DenyList {
 
     func contains(term: String) -> Bool {
-        denyListTerms.contains(term.lowercased())
+        denyListTrie.contains(term.lowercased())
     }
 
     func insert(term: String) {
         let processedTerm = term.lowercased()
-        denyListTerms.insert(processedTerm) // no effect if already in the set
+        denyListTrie.insert(processedTerm)
     }
 }
