@@ -34,7 +34,7 @@ class UserSearchResultDataProviderTests: XCTestCase {
 
         // Act
         let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
-        dataProvider.fetchUsers(testSearchTerm) { result in }
+        dataProvider.fetchUsers(testSearchTerm) { _ in }
 
         // Assert
         wait(for: [expectation], timeout: 1)
@@ -46,14 +46,14 @@ class UserSearchResultDataProviderTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Search term was not passed to API")
         expectation.isInverted = true
 
-        mockApiService.onFetchUsersCalled = { term, completion in
+        mockApiService.onFetchUsersCalled = { _, _ in
             expectation.fulfill() // should not get here!
         }
         mockDenyList.onContainsCalled = { _ in true } // indicates term is in deny list
 
         // Act
         let dataProvider = UserSearchResultDataProvider(slackAPI: mockApiService, denyList: mockDenyList)
-        dataProvider.fetchUsers(testSearchTerm) { result in }
+        dataProvider.fetchUsers(testSearchTerm) { _ in }
 
         // Assert
         wait(for: [expectation], timeout: 1)

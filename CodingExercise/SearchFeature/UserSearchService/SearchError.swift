@@ -13,4 +13,3 @@ enum SearchError: Error {
     case invalidUrl
     case requestFailed
 }
-

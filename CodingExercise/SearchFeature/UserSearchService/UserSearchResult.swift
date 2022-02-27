@@ -16,6 +16,7 @@ struct UserSearchResult: Codable {
 
 /// A top-level search response object from the Slack API.
 struct SearchResponse: Codable {
+    // swiftlint:disable identifier_name
     let ok: Bool
     let error: String?
     let users: [UserSearchResult]

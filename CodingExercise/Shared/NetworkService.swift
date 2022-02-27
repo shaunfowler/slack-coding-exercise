@@ -9,6 +9,7 @@
 import Foundation
 import OSLog
 
+/// Represents errors from the network service layer.
 enum NetworkError: Error {
     case invalidData
     case notSuccess(Int)
@@ -22,9 +23,29 @@ protocol NetworkServiceProtocol {
 
 class NetworkService: NetworkServiceProtocol {
 
-    private let defaultSession = URLSession(configuration: .default)
+    // MARK: - Internal Types
+
+    private enum ConfigConstants {
+        static let cacheMemorySizeInBytes =  20_000_000 // ~ 20 MB
+        static let cacheDiskSizeInBytes   = 100_000_000 // ~ 100 MB
+    }
+
+    // MARK: - Private Properties
+
+    /// A configured URLSession using a 20 MB in-memory and 10 MB disk URL cache.
+    /// Requests will use cache if available before making a network request.
+    private var defaultSession: URLSession {
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .returnCacheDataElseLoad
+        config.timeoutIntervalForRequest = 10
+        config.urlCache = URLCache(
+            memoryCapacity: ConfigConstants.cacheMemorySizeInBytes,
+            diskCapacity: ConfigConstants.cacheDiskSizeInBytes)
+        return URLSession(configuration: config)
+    }
+
+    /// Dictionary storage for in-flight `URLSessionDataTask`s.
     private var dataTasks = [URL: URLSessionDataTask]()
-    private var queryDataTask: URLSessionDataTask?
 
     /// A JSON decoder that convers keys from `snake_case` to `camelCase`.
     private let decoder: JSONDecoder = {
@@ -33,6 +54,7 @@ class NetworkService: NetworkServiceProtocol {
         return decoder
     }()
 
+    // MARK: - Public Functions
 
     /// Performs a GET request for the given URL.
     /// - Parameters:
@@ -43,7 +65,9 @@ class NetworkService: NetworkServiceProtocol {
         // Cancel existing task for this URL.
         dataTasks[url]?.cancel()
 
-        // 🚀
+        // Fire off the network request.
+        Logger.slackApi.debug("Requesting url: \(url.absoluteString).")
+
         let task = defaultSession.dataTask(with: url) { [weak self] data, response, error in
 
             guard let self = self else { return }
@@ -62,6 +86,7 @@ class NetworkService: NetworkServiceProtocol {
                 Logger.slackApi.debug("Current data task count: \(self.dataTasks.count).")
             }
 
+            // Handle error cases.
             if let error = error {
                 Logger.slackApi.error("Request failed with error: \(error.localizedDescription).")
                 errorToReturn = .unknown(error)
@@ -80,6 +105,7 @@ class NetworkService: NetworkServiceProtocol {
                 return
             }
 
+            // Decode the response body if the request was successful.
             do {
                 resultToReturn = try self.decoder.decode(T.self, from: data)
             } catch {

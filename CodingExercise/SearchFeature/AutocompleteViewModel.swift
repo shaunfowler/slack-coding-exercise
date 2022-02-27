@@ -23,7 +23,7 @@ protocol AutocompleteViewModelInterface {
     var delegate: AutocompleteViewModelDelegate? { get set }
 
     /// Updates users according to given update string.
-    /// Changes to the user list will be notified via the onUsersDataUpdated(users:forSearchTerm:withError) delegate.
+    /// Changes to the user list will be notified via the `onUsersDataUpdated(users:forSearchTerm:withError)` delegate.
     func updateSearchText(text: String?)
 }
 
@@ -56,21 +56,12 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     init(dataProvider: UserSearchResultDataProviderInterface) {
         self.resultsDataProvider = dataProvider
         monitorSearchText()
-        // searchText.send("A")
     }
 
     // MARK: - Public Functions
 
     func updateSearchText(text: String?) {
         searchText.send(text)
-    }
-
-    func userCount() -> Int {
-        return users.count
-    }
-
-    func user(at index: Int) -> UserSearchResult {
-        return users[index]
     }
 
     // MARK: - Private Functions
@@ -100,7 +91,7 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     /// Subscribe to changes in search text and fire off request to reload users matching search text.
     private func monitorSearchText() {
 
-        // Susbcribe to search text and debounce changes to limit load on API while customer is typing.
+        // Debounce changes to limit load on API while customer is typing.
         searchText
             .debounce(for: .init(Constants.searchDebounceInSeconds), scheduler: RunLoop.main)
             .receive(on: DispatchQueue.main)

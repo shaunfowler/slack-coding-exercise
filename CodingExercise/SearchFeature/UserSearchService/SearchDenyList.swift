@@ -11,7 +11,14 @@ import UIKit
 import Combine
 
 protocol DenyList {
+
+    /// Check if a term is contained in the deny list.
+    /// - Parameter term: The term to check for.
+    /// - Returns: True if the term is in the deny list.
     func insert(term: String)
+
+    /// Insert a term into the denylist.
+    /// - Parameter term: The term to insert.
     func contains(term: String) -> Bool
 }
 
@@ -28,6 +35,7 @@ class DynamicDenyList {
     private var denyListTerms = Set<String>()
     private var subscriptions = Set<AnyCancellable>()
 
+    // Optimization: Use LRU cache or something that prevents the entire denylist from being loaded in memory in case it gets large
     private var persistedDenyList: [String]? {
         UserDefaults.standard.array(forKey: Constants.userDefaultsKey) as? [String]
     }
@@ -92,18 +100,12 @@ class DynamicDenyList {
 
 extension DynamicDenyList: DenyList {
 
-    /// Check if a term is contained in the deny list.
-    /// - Parameter term: The term to check for.
-    /// - Returns: True if the term is in the deny list.
     func contains(term: String) -> Bool {
         denyListTerms.contains(term.lowercased())
     }
 
-    /// Insert a term into the denylist.
-    /// - Parameter term: The term to insert.
     func insert(term: String) {
         let processedTerm = term.lowercased()
         denyListTerms.insert(processedTerm) // no effect if already in the set
     }
 }
-

@@ -16,6 +16,8 @@ class MockNetworkService: NetworkServiceProtocol {
 
     func get<T: Decodable>(url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         if let result = result {
+            // Since this is a test mock...
+            // swiftlint:disable force_cast
             completionHandler(.success(result as! T))
         }
         if let error = error {

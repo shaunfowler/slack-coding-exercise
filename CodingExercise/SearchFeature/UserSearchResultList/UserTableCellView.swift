@@ -26,7 +26,7 @@ class UserTableCellView: UITableViewCell {
         static let usernameFontColor: UIColor = .customSecondaryText
     }
 
-    var avatarUrl: URL?  {
+    var avatarUrl: URL? {
         didSet {
             // Use Kingfisher for image loading + caching remote images
             // Credit: https://github.com/onevcat/Kingfisher

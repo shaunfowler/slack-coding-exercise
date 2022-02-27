@@ -17,7 +17,7 @@ protocol UserSearchResultDataProviderInterface {
 
 /// A data provider for Slack user search. This data provider handles caching of search results.
 class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
-    
+
     private var slackAPI: UserSearchService
     private var denyList: DenyList
 

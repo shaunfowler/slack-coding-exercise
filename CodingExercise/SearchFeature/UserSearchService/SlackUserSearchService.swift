@@ -59,7 +59,7 @@ class SlackUserSearchService: UserSearchService {
             switch result {
             case .success(let response):
                 completionHandler(.success(response.users))
-            case .failure(_):
+            case .failure:
                 completionHandler(.failure(.requestFailed))
 
             }
