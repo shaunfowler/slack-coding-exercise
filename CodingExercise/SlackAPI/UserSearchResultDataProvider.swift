@@ -12,20 +12,20 @@ import OSLog
 protocol UserSearchResultDataProviderInterface {
 
     /// Fetches users from that match a given a search term
-    func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SlackError>) -> Void)
+    func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SearchError>) -> Void)
 }
 
 /// A data provider for Slack user search. This data provider handles caching of search results.
 class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
     
-    private var slackAPI: SlackAPIInterface
+    private var slackAPI: UserSearchService
     private var denyList: DenyList
 
     /// Creates a new data provider.
     /// - Parameters:
     ///   - slackAPI: The API to fetch data from.
     ///   - denyList: A deny list indicating which search terms to ignore.
-    init(slackAPI: SlackAPIInterface, denyList: DenyList) {
+    init(slackAPI: UserSearchService, denyList: DenyList) {
         self.slackAPI = slackAPI
         self.denyList = denyList
     }
@@ -34,7 +34,7 @@ class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
     /// - Parameters:
     ///   - searchTerm: A search term to match against users and user names. This is a prefix search.
     ///   - completionHandler: Closure to be invoked once search results are ready.
-    func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SlackError>) -> Void) {
+    func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SearchError>) -> Void) {
 
         if denyList.contains(term: searchTerm) {
             Logger.slackDataProvider.debug("Search term '\(searchTerm, privacy: .private)' is in deny list, ignoring search.")

@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         // Create the (small) dependency tree.
-        let dataProvider = UserSearchResultDataProvider(slackAPI: SlackApi(), denyList: DynamicDenyList())
+        let dataProvider = UserSearchResultDataProvider(slackAPI: SlackUserSearchService(), denyList: DynamicDenyList())
         let viewModel = AutocompleteViewModel(dataProvider: dataProvider)
 
         // Create the main view controller and add it to the window.

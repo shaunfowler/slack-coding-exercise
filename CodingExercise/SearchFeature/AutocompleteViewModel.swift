@@ -11,22 +11,20 @@ import Combine
 protocol AutocompleteViewModelDelegate: AnyObject {
 
     /// Indicates the data model has changed. If an error ocurred, the error parameter will not be nil.
-    func onUsersDataUpdated(users: [UserSearchResult], forSearchTerm searchTerm: String?, withError error: SlackError?)
+    func onUsersDataUpdated(users: [UserSearchResult], forSearchTerm searchTerm: String?, withError error: SearchError?)
 }
 
 protocol AutocompleteViewModelInterface {
 
-    /// Updates users according to given update string.
-    func updateSearchText(text: String?)
-
-    /// Returns a user at the given position.
-    func user(at index: Int) -> UserSearchResult
-
-    /// Returns the count of the current users array.
-    func userCount() -> Int
+    /// The current list of users matching the provided search term.
+    var users: [UserSearchResult] { get }
 
     /// Delegate that allows to send data updates through callback.
     var delegate: AutocompleteViewModelDelegate? { get set }
+
+    /// Updates users according to given update string.
+    /// Changes to the user list will be notified via the onUsersDataUpdated(users:forSearchTerm:withError) delegate.
+    func updateSearchText(text: String?)
 }
 
 class AutocompleteViewModel: AutocompleteViewModelInterface {
@@ -42,9 +40,14 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     private let resultsDataProvider: UserSearchResultDataProviderInterface
     private var searchText = CurrentValueSubject<String?, Never>(nil)
     private var subscriptions = Set<AnyCancellable>()
-    private var users: [UserSearchResult] = []
 
     // MARK: - Public Properties
+
+    private (set) var users = [UserSearchResult]() {
+        didSet {
+            dispatchPrecondition(condition: .onQueue(.main))
+        }
+    }
 
     public weak var delegate: AutocompleteViewModelDelegate?
 
@@ -75,10 +78,12 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
     /// Perform the API call and notify delegate on main queue that data has been updated.
     /// - Parameter searchTerm: The search term.
     private func fetchUsers(searchTerm: String) {
+
         // Fetch users with given search term.
         resultsDataProvider.fetchUsers(searchTerm) { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
+
                 // Notify delegate of either user data, or human-redable error message.
                 switch result {
                 case .success(let users):
@@ -92,10 +97,13 @@ class AutocompleteViewModel: AutocompleteViewModelInterface {
         }
     }
 
-    /// Subscribe to changes in search text and debounce to limit load on API while customer is typing.
+    /// Subscribe to changes in search text and fire off request to reload users matching search text.
     private func monitorSearchText() {
+
+        // Susbcribe to search text and debounce changes to limit load on API while customer is typing.
         searchText
             .debounce(for: .init(Constants.searchDebounceInSeconds), scheduler: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] text in
                 guard let self = self else { return }
 

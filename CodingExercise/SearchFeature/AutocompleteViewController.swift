@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AutocompleteViewController: UIViewController {
+class AutocompleteViewController: KeyboardNotifyingViewController {
 
     // MARK: - Internal Types
 
@@ -21,6 +21,8 @@ class AutocompleteViewController: UIViewController {
     // MARK: - Private Properties
 
     private var viewModel: AutocompleteViewModelInterface
+
+    private var dataSource: UserDataSource
 
     private lazy var searchTextField: UITextField = {
         let textField = UITextField(frame: .zero)
@@ -38,15 +40,13 @@ class AutocompleteViewController: UIViewController {
         return textField
     }()
 
-    private lazy var searchResultsTableView: UITableView = {
+    private let searchResultsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Constants.cellRowHeight
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UserTableCellView.self, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.separatorColor = .customSeparator
-        tableView.dataSource = self
-        tableView.delegate = self
         return tableView
     }()
 
@@ -54,6 +54,7 @@ class AutocompleteViewController: UIViewController {
 
     init(viewModel: AutocompleteViewModelInterface) {
         self.viewModel = viewModel
+        self.dataSource = UserDataSource(tableView: searchResultsTableView)
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .customBackground
     }
@@ -62,7 +63,7 @@ class AutocompleteViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Layout
+    // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,13 +71,23 @@ class AutocompleteViewController: UIViewController {
 
         setupSubviews()
         setupAccessibility()
-        subscribeToKeyboardVisibility()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        unsubscribeFromKeyboardVisibility()
+    override func onKeyboardShowing(withFrame frame: CGRect) {
+        super.onKeyboardShowing(withFrame: frame)
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: frame.height - view.safeAreaInsets.bottom, right: 0)
+        searchResultsTableView.contentInset = insets
+        searchResultsTableView.scrollIndicatorInsets = insets
     }
+
+    override func onKeyboardHiding() {
+        super.onKeyboardHiding()
+        // Remove content insets when keyboard will be hidden.
+        searchResultsTableView.contentInset = .zero
+        searchResultsTableView.scrollIndicatorInsets = .zero
+    }
+
+    // MARK: - Private Functions
 
     private func setupSubviews() {
         view.addSubview(searchTextField)
@@ -102,15 +113,6 @@ class AutocompleteViewController: UIViewController {
         searchResultsTableView.shouldGroupAccessibilityChildren = true
     }
 
-    private func subscribeToKeyboardVisibility() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIApplication.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIApplication.keyboardWillHideNotification, object: nil)
-    }
-
-    private func unsubscribeFromKeyboardVisibility() {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     private func showTableViewMessage(message: String, level: MessageView.Level? = nil) {
         searchResultsTableView.backgroundView = MessageView(message: message, level: level)
     }
@@ -119,29 +121,14 @@ class AutocompleteViewController: UIViewController {
         searchResultsTableView.backgroundView = nil
     }
 
-    // MARK: - Selectors
-
-    @objc func textFieldDidChange(textField: UITextField) {
+    @objc private func textFieldDidChange(textField: UITextField) {
         viewModel.updateSearchText(text: searchTextField.text)
-    }
-
-    @objc func keyboardWillShow(_ notification: Notification) {
-        // Update table view content insets to consider vertical space the keyboard fills.
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height - view.safeAreaInsets.bottom, right: 0)
-        searchResultsTableView.contentInset = insets
-        searchResultsTableView.scrollIndicatorInsets = insets
-    }
-
-    @objc func keyboardWillHide(_ notification: Notification) {
-        // Remove content insets when keyboard will be hidden.
-        searchResultsTableView.contentInset = .zero
-        searchResultsTableView.scrollIndicatorInsets = .zero
     }
 }
 
 extension AutocompleteViewController: AutocompleteViewModelDelegate {
-    func onUsersDataUpdated(users: [UserSearchResult], forSearchTerm searchTerm: String?, withError error: SlackError?) {
+
+    func onUsersDataUpdated(users: [UserSearchResult], forSearchTerm searchTerm: String?, withError error: SearchError?) {
         // Display an error if there are no rows to dispaly in the table view.
         switch (users.isEmpty, error) {
         case (false, nil):
@@ -160,35 +147,15 @@ extension AutocompleteViewController: AutocompleteViewModelDelegate {
             showTableViewMessage(message: LocalizableKey.searchMessageError.localized, level: .warn)
         }
 
-        // Reload the table view.
-        searchResultsTableView.reloadData()
+        // Update the table view data.
+        dataSource.updateSnapshot(data: users)
     }
 }
 
 extension AutocompleteViewController: UITextFieldDelegate {
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-}
-
-extension AutocompleteViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
-        if let cell = cell as? UserTableCellView {
-            let user = viewModel.user(at: indexPath.row)
-            cell.nameView.text = user.displayName
-            cell.usernameView.text = user.username
-            cell.avatarUrl = user.avatarUrl
-        }
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.userCount()
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
