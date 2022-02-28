@@ -46,7 +46,6 @@ class UserTableCellView: UITableViewCell {
     let nameView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .lato(weight: .bold, size: Constants.nameFontSize)
         label.textColor = Constants.nameFontColor
         return label
     }()
@@ -54,7 +53,6 @@ class UserTableCellView: UITableViewCell {
     let usernameView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .lato(weight: .regular, size: Constants.usernameFontSize)
         label.textColor = Constants.usernameFontColor
         return label
     }()
@@ -68,6 +66,7 @@ class UserTableCellView: UITableViewCell {
 
         setupAccessibility()
         setupLayoutMarginsAndInsets()
+        setupFonts()
         activateConstraints()
     }
 
@@ -105,6 +104,17 @@ class UserTableCellView: UITableViewCell {
             leading: Constants.cellContentInsetHorizontal,
             bottom: Constants.cellContentInsetVertical,
             trailing: Constants.cellContentInsetHorizontal)
+    }
+
+    private func setupFonts() {
+        // Adjust for bold font accessibility option.
+        if UIAccessibility.isBoldTextEnabled {
+            nameView.font = .lato(weight: .bold, size: Constants.nameFontSize)
+            usernameView.font = .lato(weight: .bold, size: Constants.usernameFontSize)
+        } else {
+            nameView.font = .lato(weight: .bold, size: Constants.nameFontSize)
+            usernameView.font = .lato(weight: .regular, size: Constants.usernameFontSize)
+        }
     }
 
     private func activateConstraints() {

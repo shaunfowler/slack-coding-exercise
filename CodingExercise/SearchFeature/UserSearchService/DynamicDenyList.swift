@@ -1,5 +1,5 @@
 //
-//  SearchDenyList.swift
+//  DynamicDenyList.swift
 //  CodingExercise
 //
 //  Created by Slack Candidate on 2/24/22.
@@ -23,8 +23,8 @@ protocol DenyList {
     func contains(term: String) -> Bool
 }
 
-/// A deny-list that persists newly added terms.
-/// The deny list will keep newly added terms in memory until the app state becomes inactive,
+/// A denylist that persists newly added terms.
+/// The denylist will keep newly added terms in memory until the app state becomes inactive,
 /// and which time the deny list will be persisted.
 class DynamicDenyList {
 
@@ -74,6 +74,8 @@ class DynamicDenyList {
     }
 
     private func persist() {
+        // Potential improvement: move encoding off of main queue.
+        // Although no performance or dropped frames were observed, so this has not been pushed off the main queue.
         if let data = try? encoder.encode(denyListTrie) {
             UserDefaults.standard.set(data, forKey: Constants.denyListKey)
         }

@@ -9,7 +9,7 @@
 import Foundation
 @testable import CodingExercise
 
-class MockUserSearchService: UserSearchService {
+class MockUserSearchService: UserSearchable {
 
     var onFetchUsersCalled: ((String, (Result<[UserSearchResult], SearchError>) -> Void) -> Void)?
 

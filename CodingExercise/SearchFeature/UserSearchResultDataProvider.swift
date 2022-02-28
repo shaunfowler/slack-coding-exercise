@@ -1,5 +1,5 @@
 //
-//  UsernameSearchResultDataProvider.swift
+//  UserSearchResultDataProvider.swift
 //  CodingExercise
 //
 //  Copyright © 2021 slack. All rights reserved.
@@ -18,14 +18,14 @@ protocol UserSearchResultDataProviderInterface {
 /// A data provider for Slack user search. This data provider handles caching of search results.
 class UserSearchResultDataProvider: UserSearchResultDataProviderInterface {
 
-    private var userSearchService: UserSearchService
+    private var userSearchService: UserSearchable
     private var denyList: DenyList
 
     /// Creates a new data provider.
     /// - Parameters:
     ///   - userSearchService: The service to fetch remote data from.
     ///   - denyList: A deny list indicating which search terms to ignore.
-    init(userSearchService: UserSearchService, denyList: DenyList) {
+    init(userSearchService: UserSearchable, denyList: DenyList) {
         self.userSearchService = userSearchService
         self.denyList = denyList
     }

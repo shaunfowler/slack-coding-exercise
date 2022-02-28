@@ -1,5 +1,5 @@
 //
-//  SlackUserSearchService.swift
+//  UserSearchService.swift
 //  CodingExercise
 //
 //  Copyright © 2021 slack. All rights reserved.
@@ -8,8 +8,7 @@
 import Foundation
 import OSLog
 
-// MARK: - Interfaces
-
+/// URLs available on the Slack search API. Use the `url` computed property to access the `URL` object.
 enum SlackUserSearchUrl {
 
     private static let base = "https://slack-users.herokuapp.com/search"
@@ -27,13 +26,13 @@ enum SlackUserSearchUrl {
     }
 }
 
-protocol UserSearchService {
+protocol UserSearchable {
 
     /// Fetches users from search API that match the search term.
     func fetchUsers(_ searchTerm: String, completionHandler: @escaping (Result<[UserSearchResult], SearchError>) -> Void)
 }
 
-class SlackUserSearchService: UserSearchService {
+class UserSearchService: UserSearchable {
 
     private let networkService: NetworkServiceProtocol
 
@@ -55,6 +54,7 @@ class SlackUserSearchService: UserSearchService {
             return
         }
 
+        // Note: treat don't `ok: false` in the JSON response as this indicates no results v.s. an actual error.
         networkService.get(url: url) { (result: Result<SearchResponse, NetworkError>) in
             switch result {
             case .success(let response):

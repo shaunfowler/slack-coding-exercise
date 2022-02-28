@@ -9,7 +9,10 @@
 import Foundation
 import UIKit
 
+/// A base class that handles subscription to keyboard frame changes.
 class KeyboardNotifyingViewController: UIViewController {
+
+    // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +36,8 @@ class KeyboardNotifyingViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIApplication.keyboardWillHideNotification, object: nil)
     }
 
+    // MARK: - Private Functions
+
     @objc private func keyboardWillShow(_ notification: Notification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
@@ -43,6 +48,8 @@ class KeyboardNotifyingViewController: UIViewController {
     @objc private func keyboardWillHide(_ notification: Notification) {
         onKeyboardHiding()
     }
+
+    // MARK: - Public Functions
 
     /// Override to be notified of the keyboard frame size when the keyboard is becoming visible.
     /// - Parameter withFrame: The keyboard frame.

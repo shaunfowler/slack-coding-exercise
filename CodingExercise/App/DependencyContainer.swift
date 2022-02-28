@@ -19,8 +19,8 @@ class DependencyContainer {
 
     private var denyList: DenyList = DynamicDenyList()
 
-    private lazy var userSearchService: UserSearchService = {
-        SlackUserSearchService(networkService: networkService)
+    private lazy var userSearchService: UserSearchable = {
+        UserSearchService(networkService: networkService)
     }()
 
     private lazy var userSearchResultDataProvider: UserSearchResultDataProviderInterface = {

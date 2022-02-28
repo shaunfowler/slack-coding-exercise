@@ -13,7 +13,7 @@
 		6A29FD0C20E6EB0F004885EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A29FD0B20E6EB0F004885EC /* Assets.xcassets */; };
 		6A29FD1A20E6EB10004885EC /* UserSearchResultDataProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A29FD1920E6EB10004885EC /* UserSearchResultDataProviderTests.swift */; };
 		6A29FD2720E6EC1F004885EC /* UserSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A29FD2620E6EC1F004885EC /* UserSearchResult.swift */; };
-		6A29FD2920E6EC2F004885EC /* SlackUserSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A29FD2820E6EC2F004885EC /* SlackUserSearchService.swift */; };
+		6A29FD2920E6EC2F004885EC /* UserSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A29FD2820E6EC2F004885EC /* UserSearchService.swift */; };
 		6A29FD2D20E6EC79004885EC /* UserSearchResultDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A29FD2C20E6EC79004885EC /* UserSearchResultDataProvider.swift */; };
 		6AC4866E21F2AB700068D741 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AC4866D21F2AB700068D741 /* LaunchScreen.storyboard */; };
 		6AE88E35222759D90032677C /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6AE88E33222759D80032677C /* Lato-Bold.ttf */; };
@@ -37,7 +37,7 @@
 		E69DFABE27C82E8F003F9FE8 /* UIFont+lato.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */; };
 		E69DFAC127C838C1003F9FE8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E69DFAC027C838C1003F9FE8 /* Kingfisher */; };
 		E69DFAC427C83C1C003F9FE8 /* UIColor+custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */; };
-		E69DFAC627C843C6003F9FE8 /* SearchDenyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAC527C843C6003F9FE8 /* SearchDenyList.swift */; };
+		E69DFAC627C843C6003F9FE8 /* DynamicDenyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAC527C843C6003F9FE8 /* DynamicDenyList.swift */; };
 		E69DFAC827C85E5D003F9FE8 /* MockDenyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DFAC727C85E5D003F9FE8 /* MockDenyList.swift */; };
 		E6C396A527C8902300613165 /* SearchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C396A427C8902300613165 /* SearchError.swift */; };
 		E6C396AC27C8C09200613165 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C396AB27C8C09200613165 /* MessageView.swift */; };
@@ -64,7 +64,7 @@
 		6A29FD1920E6EB10004885EC /* UserSearchResultDataProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchResultDataProviderTests.swift; sourceTree = "<group>"; };
 		6A29FD1B20E6EB10004885EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A29FD2620E6EC1F004885EC /* UserSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchResult.swift; sourceTree = "<group>"; };
-		6A29FD2820E6EC2F004885EC /* SlackUserSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlackUserSearchService.swift; sourceTree = "<group>"; };
+		6A29FD2820E6EC2F004885EC /* UserSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchService.swift; sourceTree = "<group>"; };
 		6A29FD2C20E6EC79004885EC /* UserSearchResultDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchResultDataProvider.swift; sourceTree = "<group>"; };
 		6AC4866D21F2AB700068D741 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6AE88E33222759D80032677C /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
@@ -88,7 +88,7 @@
 		E69DFABA27C76B91003F9FE8 /* MockUserSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserSearchService.swift; sourceTree = "<group>"; };
 		E69DFABD27C82E8F003F9FE8 /* UIFont+lato.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+lato.swift"; sourceTree = "<group>"; };
 		E69DFAC327C83C1C003F9FE8 /* UIColor+custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+custom.swift"; sourceTree = "<group>"; };
-		E69DFAC527C843C6003F9FE8 /* SearchDenyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDenyList.swift; sourceTree = "<group>"; };
+		E69DFAC527C843C6003F9FE8 /* DynamicDenyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicDenyList.swift; sourceTree = "<group>"; };
 		E69DFAC727C85E5D003F9FE8 /* MockDenyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDenyList.swift; sourceTree = "<group>"; };
 		E6C396A427C8902300613165 /* SearchError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchError.swift; sourceTree = "<group>"; };
 		E6C396AB27C8C09200613165 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
@@ -165,9 +165,9 @@
 		6A29FD2520E6EC09004885EC /* UserSearchService */ = {
 			isa = PBXGroup;
 			children = (
-				E69DFAC527C843C6003F9FE8 /* SearchDenyList.swift */,
+				E69DFAC527C843C6003F9FE8 /* DynamicDenyList.swift */,
 				E6C396A427C8902300613165 /* SearchError.swift */,
-				6A29FD2820E6EC2F004885EC /* SlackUserSearchService.swift */,
+				6A29FD2820E6EC2F004885EC /* UserSearchService.swift */,
 				6A29FD2620E6EC1F004885EC /* UserSearchResult.swift */,
 			);
 			path = UserSearchService;
@@ -406,9 +406,9 @@
 				E6C396AC27C8C09200613165 /* MessageView.swift in Sources */,
 				E674DE2627CB030100361ED8 /* NetworkService.swift in Sources */,
 				E674DE7627CB31A800361ED8 /* SceneDelegate.swift in Sources */,
-				E69DFAC627C843C6003F9FE8 /* SearchDenyList.swift in Sources */,
+				E69DFAC627C843C6003F9FE8 /* DynamicDenyList.swift in Sources */,
 				E6C396A527C8902300613165 /* SearchError.swift in Sources */,
-				6A29FD2920E6EC2F004885EC /* SlackUserSearchService.swift in Sources */,
+				6A29FD2920E6EC2F004885EC /* UserSearchService.swift in Sources */,
 				E674DE7A27CC05A300361ED8 /* Trie.swift in Sources */,
 				E69DFAC427C83C1C003F9FE8 /* UIColor+custom.swift in Sources */,
 				E69DFABE27C82E8F003F9FE8 /* UIFont+lato.swift in Sources */,

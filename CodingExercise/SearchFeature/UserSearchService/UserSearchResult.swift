@@ -9,6 +9,7 @@ import Foundation
 
 /// A user search result from the Slack API.
 struct UserSearchResult: Codable {
+    let id: Int
     let avatarUrl: URL
     let displayName: String
     let username: String

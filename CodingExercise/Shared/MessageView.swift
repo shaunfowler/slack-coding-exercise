@@ -9,10 +9,12 @@
 import Foundation
 import UIKit
 
+/// A padded, single-line label view that respects dynamic type.
 class MessageView: UIView {
 
     private enum Constants {
         static let spacing: CGFloat = 16.0
+        static let fontSize: CGFloat = 16.0
     }
 
     private let message: String
@@ -22,7 +24,6 @@ class MessageView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         // Font configuration.
-        label.font = .lato(.callout)
         label.textColor = .customSecondaryText
         label.textAlignment = .center
 
@@ -46,6 +47,8 @@ class MessageView: UIView {
     }
 
     override func layoutSubviews() {
+        setupFonts()
+
         addSubview(label)
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
@@ -53,5 +56,16 @@ class MessageView: UIView {
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.spacing),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.spacing)
         ])
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // Adapt to bold font accessibility setting.
+        if previousTraitCollection?.legibilityWeight != traitCollection.legibilityWeight {
+            setupFonts()
+        }
+    }
+
+    private func setupFonts() {
+        label.font = .lato(weight: UIAccessibility.isBoldTextEnabled ? .bold : .regular, size: Constants.fontSize)
     }
 }

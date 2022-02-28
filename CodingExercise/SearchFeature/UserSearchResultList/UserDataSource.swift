@@ -51,10 +51,10 @@ class UserDataSource: UITableViewDiffableDataSource<UserDataSource.Section, User
 extension UserSearchResult: Hashable {
 
     static func == (lhs: UserSearchResult, rhs: UserSearchResult) -> Bool {
-        lhs.username == rhs.username
+        lhs.id == rhs.id
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(username)
+        hasher.combine(id)
     }
 }

@@ -13,16 +13,16 @@ import XCTest
 class UserSeachServiceTests: XCTestCase {
 
     let sampleResponse = SearchResponse(ok: true, error: nil, users: [
-        UserSearchResult(avatarUrl: URL(string: "http://example.com")!, displayName: "Jane", username: "jdoe")
+        UserSearchResult(id: 1, avatarUrl: URL(string: "http://example.com")!, displayName: "Jane", username: "jdoe")
     ])
 
-    var userSearchService: UserSearchService!
+    var userSearchService: UserSearchable!
     var mockNetworkService: MockNetworkService!
 
     override func setUp() {
         super.setUp()
         mockNetworkService = MockNetworkService()
-        userSearchService = SlackUserSearchService(networkService: mockNetworkService)
+        userSearchService = UserSearchService(networkService: mockNetworkService)
     }
 
     func testReceiveSuccess() {

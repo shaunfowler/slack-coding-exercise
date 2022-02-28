@@ -16,6 +16,7 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
         static let cellRowHeight: CGFloat = 44.0
         static let verticalSpacing: CGFloat = 8.0
         static let horizontalSpacing: CGFloat = 16.0
+        static let textFieldFontSize: CGFloat = 16.0
     }
 
     // MARK: - Private Properties
@@ -72,6 +73,7 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
         viewModel.delegate = self
 
         setupSubviews()
+        setupFonts()
         setupAccessibility()
     }
 
@@ -88,6 +90,12 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
         // Remove content insets when keyboard will be hidden.
         searchResultsTableView.contentInset = .zero
         searchResultsTableView.scrollIndicatorInsets = .zero
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.legibilityWeight != traitCollection.legibilityWeight {
+            setupFonts()
+        }
     }
 
     // MARK: - Private Functions
@@ -115,6 +123,11 @@ class AutocompleteViewController: KeyboardNotifyingViewController {
 
         searchResultsTableView.isAccessibilityElement = false
         searchResultsTableView.shouldGroupAccessibilityChildren = true
+    }
+
+    private func setupFonts() {
+        searchTextField.font = .lato(weight: UIAccessibility.isBoldTextEnabled ? .bold : .regular,
+                                     size: Constants.textFieldFontSize)
     }
 
     private func showTableViewMessage(message: String) {

@@ -11,7 +11,7 @@ import XCTest
 class UserSearchResultDataProviderTests: XCTestCase {
 
     let testSearchTerm = "test123"
-    let testUser = UserSearchResult(avatarUrl: URL(string: "http://example.com")!, displayName: "Jane", username: "jdoe")
+    let testUser = UserSearchResult(id: 1, avatarUrl: URL(string: "http://example.com")!, displayName: "Jane", username: "jdoe")
 
     var mockApiService: MockUserSearchService!
     var mockDenyList: MockDenyList!

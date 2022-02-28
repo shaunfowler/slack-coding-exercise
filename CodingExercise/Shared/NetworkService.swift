@@ -59,7 +59,7 @@ class NetworkService: NetworkServiceProtocol {
     /// Performs a GET request for the given URL.
     /// - Parameters:
     ///   - url: The URL to request.
-    ///   - completionHandler: A completion handlder containing the decoded JSON or an error.
+    ///   - completionHandler: A completion handlder containing the decoded JSON or an error. Not called from main thread.
     func get<T: Decodable>(url: URL, completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
 
         // Cancel existing task for this URL.
